@@ -1,0 +1,115 @@
+---
+title: "Preliminary Noise Sensor Exploratory Data Analysis"
+subtitle: "City of Melbourne Microclimate / IoT sensor data"
+format:
+  html:
+    toc: true
+    code-fold: true
+execute:
+  warning: false
+  message: false
+---
+## Scope
+
+This analysis is strictly descriptive. It audits and explores the noise measurements in `data/raw/microclimate_sensors.csv`.
+
+The noise unit is labelled **dataset units** because the supplied file contains no metadata establishing a physical unit. 
+
+## Reproducible analysis
+
+The complete executable analysis is kept in `analysis/noise_eda.R` and is sourced below.
+```{r}
+source("analysis/noise_eda.R")
+```
+
+## Data audit
+
+```{r}
+result[c("n_rows", "n_cols", "earliest", "latest", "unique_devices", "unique_locations", "duplicate_n")]
+result$type_table
+result$missing_table
+result$noise_stats
+```
+
+Potential extremes are flagged using the conventional 1.5-IQR rule, not automatically deleted. Their validity requires metadata and sensor-quality review.
+
+## Temporal granularity and sensor coverage
+
+```{r}
+result$frequency_summary
+result$sensor_coverage
+```
+
+Successive positive timestamp gaps are calculated separately for each sensor. The `pct_approximately_15_min` measure treats 12--18 minutes as approximately 15 minutes. Temporal comparisons must be interpreted alongside sensor-specific coverage and missingness.
+
+## Temporal summaries
+
+Daily, hourly, weekday, and weekday/weekend summaries use the **median** as the primary typical-value measure because it is robust to flagged extreme readings and uneven tails. No unusual value is silently removed.
+
+```{r}
+result$hourly
+result$weekday
+result$weekend
+```
+
+![Daily median recorded noise](../figures/fig1_daily_noise_over_time.png)
+
+![Recorded noise by hour](../figures/fig2_noise_by_hour.png)
+
+![Recorded noise by weekday](../figures/fig3_noise_by_weekday.png)
+
+## Robustness checks
+
+### Changing sensor composition
+
+The pooled daily series does not hold the monitored sensor set constant. The table below reports the exact number and identity of devices with at least one valid noise observation in each month. Figure 6 shows the same information as a count series and sensor-by-month activity matrix. It demonstrates why Figure 1 must not be interpreted as a city-wide trend.
+
+Figure 1 now inserts missing calendar dates before drawing lines, so it does not connect observations across outages. In the original version, the visually dominant rise between June and November 2022 was a straight line across a **158-day gap**, not an observed daily trend. Exact daily identities and contiguous composition periods are saved as `active_noise_sensors_by_day.csv` and `active_noise_sensor_periods.csv`.
+
+```{r}
+result$active_sensor_monthly
+```
+
+![Number and identity of active noise sensors over time](../figures/fig6_active_noise_sensors_over_time.png)
+
+### Balanced-sensor sensitivity
+
+The balanced analysis uses `ICTMicroclimate-01`, `ICTMicroclimate-02`, and `ICTMicroclimate-03` from **1 January 2023 through 30 June 2026**. These are the three earliest noise-bearing sensors with a long common span. The endpoints use the first complete month after sensor 03 began and the last complete month before sensor 01 stopped. Noise is first summarised within sensor and week, then the median is taken across the same three sensors; only weeks containing all three are retained.
+
+```{r}
+head(result$balanced_comparison)
+tail(result$balanced_comparison)
+```
+
+![Original pooled weekly series and balanced-sensor sensitivity](../figures/fig7_balanced_sensor_sensitivity.png)
+
+### Sensor-standardised hour and weekday summaries
+
+For equal-sensor summaries, the median is calculated separately for each sensor-hour or sensor-weekday cell, followed by the median across the 11 sensors with valid noise. This prevents devices with more observations from receiving greater weight.
+
+```{r}
+result$hour_comparison
+result$weekday_comparison
+```
+
+![Hourly pooled and sensor-standardised summaries](../figures/fig8_hourly_sensor_standardised.png)
+
+![Weekday pooled and sensor-standardised summaries](../figures/fig9_weekday_sensor_standardised.png)
+
+## Spatial and sensor summaries
+
+Sensor-level comparisons describe **high- or low-noise monitored locations**, not definitive Melbourne-wide hotspots. The network observes only its installed locations, and sensors have unequal temporal coverage.
+
+![Recorded noise by sensor](../figures/fig4_noise_by_sensor.png)
+
+![Sensor location map](../figures/fig5_sensor_location_map.png)
+
+The map uses the official City of Melbourne municipal boundary downloaded from the City of Melbourne Open Data Portal. Point size encodes each valid sensor's median noise; `aws5-0999` is marked separately because it has no valid noise observations. This remains a monitored-location map, not a city-wide hotspot map.
+
+## Noise metadata review
+
+No local project file documents the noise unit, sensor model, calibration procedure, noise-specific quality flag, or interpretation of zero. The [current City of Melbourne dataset page](https://data.melbourne.vic.gov.au/explore/dataset/microclimate-sensors-data/) identifies `Noise` only as a decimal field and notes that 15-minute readings may be missing. A related [historical official data dictionary](https://data.melbourne.vic.gov.au/api/datasets/1.0/microclimate-sensor-readings/attachments/microclimatesensors_metadata_attachment_datadictionary_1_pdf/) documents units and quality flags for several other microclimate fields but does not include a noise sensor entry. Authoritative noise-specific metadata therefore still needs to be obtained or confirmed with the dataset owner; values remain labelled as **dataset units**, and zeros are retained as unresolved potential quality issues.
+
+## Outputs
+
+The analysis writes reusable summaries to `data/processed/`, figures to `figures/`, and the interpretation and research-question feasibility assessment to `analysis/noise_eda_summary.md`.

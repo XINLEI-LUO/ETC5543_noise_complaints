@@ -1,0 +1,1055 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.8.25">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Preliminary Noise Sensor Exploratory Data Analysis</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="noise_eda_files/libs/clipboard/clipboard.min.js"></script>
+<script src="noise_eda_files/libs/quarto-html/quarto.js" type="module"></script>
+<script src="noise_eda_files/libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="noise_eda_files/libs/quarto-html/axe/axe-check.js" type="module"></script>
+<script src="noise_eda_files/libs/quarto-html/popper.min.js"></script>
+<script src="noise_eda_files/libs/quarto-html/tippy.umd.min.js"></script>
+<script src="noise_eda_files/libs/quarto-html/anchor.min.js"></script>
+<link href="noise_eda_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="noise_eda_files/libs/quarto-html/quarto-syntax-highlighting-7b89279ff1a6dce999919e0e67d4d9ec.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="noise_eda_files/libs/bootstrap/bootstrap.min.js"></script>
+<link href="noise_eda_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="noise_eda_files/libs/bootstrap/bootstrap-9e3ffae467580fdb927a41352e75a2e0.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+
+
+</head>
+
+<body class="quarto-light">
+
+<div id="quarto-content" class="page-columns page-rows-contents page-layout-article">
+<div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+  <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#scope" id="toc-scope" class="nav-link active" data-scroll-target="#scope">Scope</a></li>
+  <li><a href="#reproducible-analysis" id="toc-reproducible-analysis" class="nav-link" data-scroll-target="#reproducible-analysis">Reproducible analysis</a></li>
+  <li><a href="#data-audit" id="toc-data-audit" class="nav-link" data-scroll-target="#data-audit">Data audit</a></li>
+  <li><a href="#temporal-granularity-and-sensor-coverage" id="toc-temporal-granularity-and-sensor-coverage" class="nav-link" data-scroll-target="#temporal-granularity-and-sensor-coverage">Temporal granularity and sensor coverage</a></li>
+  <li><a href="#temporal-summaries" id="toc-temporal-summaries" class="nav-link" data-scroll-target="#temporal-summaries">Temporal summaries</a></li>
+  <li><a href="#robustness-checks" id="toc-robustness-checks" class="nav-link" data-scroll-target="#robustness-checks">Robustness checks</a>
+  <ul class="collapse">
+  <li><a href="#changing-sensor-composition" id="toc-changing-sensor-composition" class="nav-link" data-scroll-target="#changing-sensor-composition">Changing sensor composition</a></li>
+  <li><a href="#balanced-sensor-sensitivity" id="toc-balanced-sensor-sensitivity" class="nav-link" data-scroll-target="#balanced-sensor-sensitivity">Balanced-sensor sensitivity</a></li>
+  <li><a href="#sensor-standardised-hour-and-weekday-summaries" id="toc-sensor-standardised-hour-and-weekday-summaries" class="nav-link" data-scroll-target="#sensor-standardised-hour-and-weekday-summaries">Sensor-standardised hour and weekday summaries</a></li>
+  </ul></li>
+  <li><a href="#spatial-and-sensor-summaries" id="toc-spatial-and-sensor-summaries" class="nav-link" data-scroll-target="#spatial-and-sensor-summaries">Spatial and sensor summaries</a></li>
+  <li><a href="#noise-metadata-review" id="toc-noise-metadata-review" class="nav-link" data-scroll-target="#noise-metadata-review">Noise metadata review</a></li>
+  <li><a href="#outputs" id="toc-outputs" class="nav-link" data-scroll-target="#outputs">Outputs</a></li>
+  </ul>
+</nav>
+</div>
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Preliminary Noise Sensor Exploratory Data Analysis</h1>
+<p class="subtitle lead">City of Melbourne Microclimate / IoT sensor data</p>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<section id="scope" class="level2">
+<h2 class="anchored" data-anchor-id="scope">Scope</h2>
+<p>This analysis is strictly descriptive. It audits and explores the noise measurements in <code>data/raw/microclimate_sensors.csv</code>.</p>
+<p>The noise unit is labelled <strong>dataset units</strong> because the supplied file contains no metadata establishing a physical unit.</p>
+</section>
+<section id="reproducible-analysis" class="level2">
+<h2 class="anchored" data-anchor-id="reproducible-analysis">Reproducible analysis</h2>
+<p>The complete executable analysis is kept in <code>analysis/noise_eda.R</code> and is sourced below.</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">source</span>(<span class="st">"analysis/noise_eda.R"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+</div>
+</section>
+<section id="data-audit" class="level2">
+<h2 class="anchored" data-anchor-id="data-audit">Data audit</h2>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>result[<span class="fu">c</span>(<span class="st">"n_rows"</span>, <span class="st">"n_cols"</span>, <span class="st">"earliest"</span>, <span class="st">"latest"</span>, <span class="st">"unique_devices"</span>, <span class="st">"unique_locations"</span>, <span class="st">"duplicate_n"</span>)]</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>$n_rows
+[1] 975550
+
+$n_cols
+[1] 16
+
+$earliest
+[1] "2022-05-31 10:11:28 AEST"
+
+$latest
+[1] "2026-08-17 11:11:26 AEST"
+
+$unique_devices
+[1] 12
+
+$unique_locations
+[1] 11
+
+$duplicate_n
+[1] 0</code></pre>
+</div>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>result<span class="sc">$</span>type_table</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>                                 variable     class
+Device_id                       Device_id character
+Time                                 Time character
+SensorLocation             SensorLocation character
+LatLong                           LatLong character
+MinimumWindDirection MinimumWindDirection   numeric
+AverageWindDirection AverageWindDirection   numeric
+MaximumWindDirection MaximumWindDirection   numeric
+MinimumWindSpeed         MinimumWindSpeed   numeric
+AverageWindSpeed         AverageWindSpeed   numeric
+GustWindSpeed               GustWindSpeed   numeric
+AirTemperature             AirTemperature   numeric
+RelativeHumidity         RelativeHumidity   numeric
+AtmosphericPressure   AtmosphericPressure   numeric
+PM25                                 PM25   numeric
+PM10                                 PM10   numeric
+Noise                               Noise   numeric</code></pre>
+</div>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>result<span class="sc">$</span>missing_table</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>                     variable missing_n missing_pct
+Device_id           Device_id         0     0.00000
+Time                     Time         0     0.00000
+SensorLocation SensorLocation         0     0.00000
+LatLong               LatLong         0     0.00000
+Noise                   Noise     81591     8.36359</code></pre>
+</div>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>result<span class="sc">$</span>noise_stats</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>           n         mean           sd          min          q01          q25 
+893959.00000     66.23232     11.32888      0.00000     45.40000     58.50000 
+      median          q75          q99          max 
+    67.90000     71.60000     96.20000    131.10000 </code></pre>
+</div>
+</div>
+<p>Potential extremes are flagged using the conventional 1.5-IQR rule, not automatically deleted. Their validity requires metadata and sensor-quality review.</p>
+</section>
+<section id="temporal-granularity-and-sensor-coverage" class="level2">
+<h2 class="anchored" data-anchor-id="temporal-granularity-and-sensor-coverage">Temporal granularity and sensor coverage</h2>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>result<span class="sc">$</span>frequency_summary</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>            Device_id intervals median_gap_minutes p25_gap_minutes
+1           aws5-0999     65846           15.26667        14.90000
+2  ICTMicroclimate-01    138041           15.01667        15.00000
+3  ICTMicroclimate-02    103049           15.03333        15.01667
+4  ICTMicroclimate-03    118633           15.03333        15.01667
+5  ICTMicroclimate-04     52444           15.03333        15.03333
+6  ICTMicroclimate-05     81136           15.03333        15.01667
+7  ICTMicroclimate-06     81619           15.03333        15.03333
+8  ICTMicroclimate-07     81848           15.03333        15.01667
+9  ICTMicroclimate-08     80411           15.03333        15.01667
+10 ICTMicroclimate-09     66923           15.03333        15.03333
+11 ICTMicroclimate-10     50957           15.01667        15.01667
+12 ICTMicroclimate-11     51880           15.01667        15.01667
+   p75_gap_minutes pct_approximately_15_min
+1         30.13333                 63.66522
+2         15.01667                 92.81663
+3         15.05000                 92.16489
+4         15.05000                 93.01712
+5         15.03333                 98.72054
+6         15.05000                 98.90431
+7         15.03333                 98.68168
+8         15.05000                 98.77700
+9         15.05000                 94.03191
+10        15.03333                 98.69103
+11        15.01667                 99.58200
+12        15.01667                 99.74364</code></pre>
+</div>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>result<span class="sc">$</span>sensor_coverage</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>            Device_id
+1           aws5-0999
+2  ICTMicroclimate-01
+3  ICTMicroclimate-02
+4  ICTMicroclimate-03
+5  ICTMicroclimate-04
+6  ICTMicroclimate-05
+7  ICTMicroclimate-06
+8  ICTMicroclimate-07
+9  ICTMicroclimate-08
+10 ICTMicroclimate-09
+11 ICTMicroclimate-10
+12 ICTMicroclimate-11
+                                                                     SensorLocation
+1                                                      Royal Park Asset ID: COM2707
+2                                                   Birrarung Marr Park - Pole 1131
+3                                                        101 Collins St L11 Rooftop
+4                                                                       CH1 rooftop
+5                                                                       Batman Park
+6                                                Enterprize Park - Pole ID: COM1667
+7                 Tram Stop 7B – Melbourne Tennis Centre Precinct – Rod Laver Arena
+8                 Tram Stop 7C – Melbourne Tennis Centre Precinct – Rod Laver Arena
+9           Swanston St - Tram Stop 13 adjacent Federation Sq &amp; Flinders St Station
+10 SkyFarm (Jeff’s Shed). Rooftop - Melbourne Conference &amp; Exhibition Centre (MCEC)
+11                                                                 1 Treasury Place
+12                                                                 1 Treasury Place
+    latitude longitude        first_observation         last_observation
+1  -37.79562  144.9519 2022-12-15 16:06:22 AEDT 2026-08-17 10:57:10 AEST
+2  -37.81859  144.9716 2022-05-31 10:11:28 AEST 2026-07-01 03:41:38 AEST
+3  -37.81460  144.9703 2022-11-08 12:07:12 AEDT 2026-08-17 11:07:46 AEST
+4  -37.81403  144.9673 2022-12-21 15:39:53 AEDT 2026-08-17 11:03:40 AEST
+5  -37.82218  144.9562 2023-08-04 15:34:57 AEST 2025-07-29 08:08:46 AEST
+6  -37.82041  144.9591 2023-08-04 15:37:12 AEST 2026-08-17 11:11:26 AEST
+7  -37.81950  144.9787 2023-12-11 13:53:16 AEDT 2026-08-17 10:57:54 AEST
+8  -37.82223  144.9829 2023-12-11 13:54:27 AEDT 2026-08-17 11:08:13 AEST
+9  -37.81845  144.9678 2023-12-11 13:55:27 AEDT 2026-08-17 11:02:44 AEST
+10 -37.82233  144.9522 2023-12-11 13:57:19 AEDT 2026-08-09 18:00:11 AEST
+11 -37.81286  144.9745 2024-08-13 10:21:29 AEST 2026-08-17 11:07:49 AEST
+12 -37.81289  144.9751 2024-08-13 10:17:24 AEST 2026-08-17 11:10:02 AEST
+   coverage_days observations valid_noise missing_noise_pct mean_noise
+1      1340.8269        65847           0      100.00000000         NA
+2      1491.7293       138143      123609       10.52098188   53.43652
+3      1378.0004       103113      102470        0.62358771   72.46308
+4      1334.8498       118786      118679        0.09007796   71.11401
+5       724.6902        52573       52565        0.01521694   67.12996
+6      1108.8154        81424       81371        0.06509137   71.20389
+7       979.9199        81910       81889        0.02563790   64.98839
+8       979.9262        82145       82115        0.03652079   65.06601
+9       979.9217        81479       81455        0.02945544   68.99326
+10      972.2103        67182       67156        0.03870084   60.39789
+11      734.0322        51032       50886        0.28609500   80.65976
+12      734.0366        51916       51764        0.29278065   57.39478
+   median_noise  sd_noise min_noise max_noise
+1            NA        NA        NA        NA
+2          52.3  5.945171      35.2      97.3
+3          70.0  6.025270       0.0     131.1
+4          70.2  7.995861       0.0     130.9
+5          67.0  7.665183       0.0     118.5
+6          69.7  4.142948       0.0     126.3
+7          63.0  9.867235       0.0     124.6
+8          63.6  7.904246      49.3     123.7
+9          69.9 11.515361       0.0     128.0
+10         60.6 10.622995       0.0     122.0
+11         81.1 14.437481      50.9     119.2
+12         53.4 10.405212       0.0     106.1</code></pre>
+</div>
+</div>
+<p>Successive positive timestamp gaps are calculated separately for each sensor. The <code>pct_approximately_15_min</code> measure treats 12–18 minutes as approximately 15 minutes. Temporal comparisons must be interpreted alongside sensor-specific coverage and missingness.</p>
+</section>
+<section id="temporal-summaries" class="level2">
+<h2 class="anchored" data-anchor-id="temporal-summaries">Temporal summaries</h2>
+<p>Daily, hourly, weekday, and weekday/weekend summaries use the <strong>median</strong> as the primary typical-value measure because it is robust to flagged extreme readings and uneven tails. No unusual value is silently removed.</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>result<span class="sc">$</span>hourly</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>   hour median_noise  q25  q75 valid_n
+1     0         64.5 55.7 69.6   37286
+2     1         62.8 54.6 69.1   37271
+3     2         62.0 54.0 68.7   37284
+4     3         61.6 53.7 68.6   37198
+5     4         62.1 54.2 68.7   37221
+6     5         63.9 56.0 69.3   37126
+7     6         66.6 58.3 70.2   37210
+8     7         68.2 60.1 71.5   37092
+9     8         68.9 61.0 72.3   37001
+10    9         69.1 61.5 72.7   37333
+11   10         69.2 61.5 73.0   37294
+12   11         69.4 61.7 73.8   37413
+13   12         69.5 61.7 74.2   37251
+14   13         69.6 61.7 74.6   37366
+15   14         69.6 61.8 75.0   37297
+16   15         69.7 61.7 75.2   37363
+17   16         69.7 61.9 75.0   37238
+18   17         69.6 61.8 74.5   37073
+19   18         69.3 61.3 73.8   37368
+20   19         68.8 60.2 72.7   37238
+21   20         68.2 59.3 71.6   37174
+22   21         67.7 58.8 71.1   37278
+23   22         67.6 58.6 70.8   37243
+24   23         66.5 57.6 70.3   37341</code></pre>
+</div>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>result<span class="sc">$</span>weekday</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>    weekday median_noise  q25  q75 valid_n
+1    Monday         67.8 58.2 71.5  127466
+2   Tuesday         68.0 58.3 71.8  127449
+3 Wednesday         68.2 58.7 72.1  127172
+4  Thursday         68.2 58.9 72.0  127641
+5    Friday         68.3 59.0 72.1  128250
+6  Saturday         67.8 58.7 71.3  127959
+7    Sunday         67.3 57.9 70.7  128022</code></pre>
+</div>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>result<span class="sc">$</span>weekend</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>   period median_noise  q25  q75 valid_n
+1 Weekday         68.1 58.6 71.9  637978
+2 Weekend         67.6 58.2 71.0  255981</code></pre>
+</div>
+</div>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="../figures/fig1_daily_noise_over_time.png" class="img-fluid figure-img"></p>
+<figcaption>Daily median recorded noise</figcaption>
+</figure>
+</div>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="../figures/fig2_noise_by_hour.png" class="img-fluid figure-img"></p>
+<figcaption>Recorded noise by hour</figcaption>
+</figure>
+</div>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="../figures/fig3_noise_by_weekday.png" class="img-fluid figure-img"></p>
+<figcaption>Recorded noise by weekday</figcaption>
+</figure>
+</div>
+</section>
+<section id="robustness-checks" class="level2">
+<h2 class="anchored" data-anchor-id="robustness-checks">Robustness checks</h2>
+<section id="changing-sensor-composition" class="level3">
+<h3 class="anchored" data-anchor-id="changing-sensor-composition">Changing sensor composition</h3>
+<p>The pooled daily series does not hold the monitored sensor set constant. The table below reports the exact number and identity of devices with at least one valid noise observation in each month. Figure 6 shows the same information as a count series and sensor-by-month activity matrix. It demonstrates why Figure 1 must not be interpreted as a city-wide trend.</p>
+<p>Figure 1 now inserts missing calendar dates before drawing lines, so it does not connect observations across outages. In the original version, the visually dominant rise between June and November 2022 was a straight line across a <strong>158-day gap</strong>, not an observed daily trend. Exact daily identities and contiguous composition periods are saved as <code>active_noise_sensors_by_day.csv</code> and <code>active_noise_sensor_periods.csv</code>.</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>result<span class="sc">$</span>active_sensor_monthly</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>                month active_noise_sensors
+2022-06-01 2022-06-01                    1
+2022-11-01 2022-11-01                    2
+2022-12-01 2022-12-01                    3
+2023-01-01 2023-01-01                    2
+2023-02-01 2023-02-01                    2
+2023-03-01 2023-03-01                    3
+2023-04-01 2023-04-01                    2
+2023-05-01 2023-05-01                    2
+2023-06-01 2023-06-01                    3
+2023-07-01 2023-07-01                    3
+2023-08-01 2023-08-01                    4
+2023-09-01 2023-09-01                    5
+2023-10-01 2023-10-01                    5
+2023-11-01 2023-11-01                    5
+2023-12-01 2023-12-01                    9
+2024-01-01 2024-01-01                    5
+2024-02-01 2024-02-01                    5
+2024-03-01 2024-03-01                    7
+2024-04-01 2024-04-01                    9
+2024-05-01 2024-05-01                    8
+2024-06-01 2024-06-01                    8
+2024-07-01 2024-07-01                    8
+2024-08-01 2024-08-01                    8
+2024-09-01 2024-09-01                   11
+2024-10-01 2024-10-01                   10
+2024-11-01 2024-11-01                   11
+2024-12-01 2024-12-01                   11
+2025-01-01 2025-01-01                   11
+2025-02-01 2025-02-01                   10
+2025-03-01 2025-03-01                   10
+2025-04-01 2025-04-01                   10
+2025-05-01 2025-05-01                   11
+2025-06-01 2025-06-01                   11
+2025-07-01 2025-07-01                   10
+2025-08-01 2025-08-01                   10
+2025-09-01 2025-09-01                   10
+2025-10-01 2025-10-01                   10
+2025-11-01 2025-11-01                    9
+2025-12-01 2025-12-01                   10
+2026-01-01 2026-01-01                   10
+2026-02-01 2026-02-01                   10
+2026-03-01 2026-03-01                   10
+2026-04-01 2026-04-01                   10
+2026-05-01 2026-05-01                   10
+2026-06-01 2026-06-01                    8
+2026-07-01 2026-07-01                   10
+2026-08-01 2026-08-01                    9
+                                                                                                                                                                                                                           sensor_ids
+2022-06-01                                                                                                                                                                                                         ICTMicroclimate-01
+2022-11-01                                                                                                                                                                                     ICTMicroclimate-01; ICTMicroclimate-02
+2022-12-01                                                                                                                                                                 ICTMicroclimate-01; ICTMicroclimate-02; ICTMicroclimate-03
+2023-01-01                                                                                                                                                                                     ICTMicroclimate-01; ICTMicroclimate-03
+2023-02-01                                                                                                                                                                                     ICTMicroclimate-01; ICTMicroclimate-02
+2023-03-01                                                                                                                                                                 ICTMicroclimate-01; ICTMicroclimate-02; ICTMicroclimate-03
+2023-04-01                                                                                                                                                                                     ICTMicroclimate-01; ICTMicroclimate-03
+2023-05-01                                                                                                                                                                                     ICTMicroclimate-01; ICTMicroclimate-03
+2023-06-01                                                                                                                                                                 ICTMicroclimate-01; ICTMicroclimate-02; ICTMicroclimate-03
+2023-07-01                                                                                                                                                                 ICTMicroclimate-01; ICTMicroclimate-02; ICTMicroclimate-03
+2023-08-01                                                                                                                                             ICTMicroclimate-01; ICTMicroclimate-03; ICTMicroclimate-04; ICTMicroclimate-05
+2023-09-01                                                                                                                         ICTMicroclimate-01; ICTMicroclimate-02; ICTMicroclimate-03; ICTMicroclimate-04; ICTMicroclimate-05
+2023-10-01                                                                                                                         ICTMicroclimate-01; ICTMicroclimate-02; ICTMicroclimate-03; ICTMicroclimate-04; ICTMicroclimate-05
+2023-11-01                                                                                                                         ICTMicroclimate-01; ICTMicroclimate-02; ICTMicroclimate-03; ICTMicroclimate-04; ICTMicroclimate-05
+2023-12-01                                         ICTMicroclimate-01; ICTMicroclimate-02; ICTMicroclimate-03; ICTMicroclimate-04; ICTMicroclimate-05; ICTMicroclimate-06; ICTMicroclimate-07; ICTMicroclimate-08; ICTMicroclimate-09
+2024-01-01                                                                                                                         ICTMicroclimate-01; ICTMicroclimate-02; ICTMicroclimate-03; ICTMicroclimate-04; ICTMicroclimate-05
+2024-02-01                                                                                                                         ICTMicroclimate-01; ICTMicroclimate-02; ICTMicroclimate-03; ICTMicroclimate-04; ICTMicroclimate-05
+2024-03-01                                                                                 ICTMicroclimate-01; ICTMicroclimate-02; ICTMicroclimate-03; ICTMicroclimate-04; ICTMicroclimate-05; ICTMicroclimate-06; ICTMicroclimate-07
+2024-04-01                                         ICTMicroclimate-01; ICTMicroclimate-02; ICTMicroclimate-03; ICTMicroclimate-04; ICTMicroclimate-05; ICTMicroclimate-06; ICTMicroclimate-07; ICTMicroclimate-08; ICTMicroclimate-09
+2024-05-01                                                             ICTMicroclimate-01; ICTMicroclimate-02; ICTMicroclimate-03; ICTMicroclimate-04; ICTMicroclimate-06; ICTMicroclimate-07; ICTMicroclimate-08; ICTMicroclimate-09
+2024-06-01                                                             ICTMicroclimate-01; ICTMicroclimate-02; ICTMicroclimate-03; ICTMicroclimate-04; ICTMicroclimate-06; ICTMicroclimate-07; ICTMicroclimate-08; ICTMicroclimate-09
+2024-07-01                                                             ICTMicroclimate-01; ICTMicroclimate-02; ICTMicroclimate-03; ICTMicroclimate-05; ICTMicroclimate-06; ICTMicroclimate-07; ICTMicroclimate-08; ICTMicroclimate-09
+2024-08-01                                                             ICTMicroclimate-01; ICTMicroclimate-02; ICTMicroclimate-03; ICTMicroclimate-06; ICTMicroclimate-07; ICTMicroclimate-08; ICTMicroclimate-09; ICTMicroclimate-10
+2024-09-01 ICTMicroclimate-01; ICTMicroclimate-02; ICTMicroclimate-03; ICTMicroclimate-04; ICTMicroclimate-05; ICTMicroclimate-06; ICTMicroclimate-07; ICTMicroclimate-08; ICTMicroclimate-09; ICTMicroclimate-10; ICTMicroclimate-11
+2024-10-01                     ICTMicroclimate-01; ICTMicroclimate-02; ICTMicroclimate-03; ICTMicroclimate-04; ICTMicroclimate-06; ICTMicroclimate-07; ICTMicroclimate-08; ICTMicroclimate-09; ICTMicroclimate-10; ICTMicroclimate-11
+2024-11-01 ICTMicroclimate-01; ICTMicroclimate-02; ICTMicroclimate-03; ICTMicroclimate-04; ICTMicroclimate-05; ICTMicroclimate-06; ICTMicroclimate-07; ICTMicroclimate-08; ICTMicroclimate-09; ICTMicroclimate-10; ICTMicroclimate-11
+2024-12-01 ICTMicroclimate-01; ICTMicroclimate-02; ICTMicroclimate-03; ICTMicroclimate-04; ICTMicroclimate-05; ICTMicroclimate-06; ICTMicroclimate-07; ICTMicroclimate-08; ICTMicroclimate-09; ICTMicroclimate-10; ICTMicroclimate-11
+2025-01-01 ICTMicroclimate-01; ICTMicroclimate-02; ICTMicroclimate-03; ICTMicroclimate-04; ICTMicroclimate-05; ICTMicroclimate-06; ICTMicroclimate-07; ICTMicroclimate-08; ICTMicroclimate-09; ICTMicroclimate-10; ICTMicroclimate-11
+2025-02-01                     ICTMicroclimate-01; ICTMicroclimate-02; ICTMicroclimate-03; ICTMicroclimate-04; ICTMicroclimate-05; ICTMicroclimate-06; ICTMicroclimate-07; ICTMicroclimate-08; ICTMicroclimate-09; ICTMicroclimate-11
+2025-03-01                     ICTMicroclimate-01; ICTMicroclimate-02; ICTMicroclimate-03; ICTMicroclimate-04; ICTMicroclimate-05; ICTMicroclimate-06; ICTMicroclimate-07; ICTMicroclimate-08; ICTMicroclimate-09; ICTMicroclimate-11
+2025-04-01                     ICTMicroclimate-01; ICTMicroclimate-02; ICTMicroclimate-03; ICTMicroclimate-04; ICTMicroclimate-05; ICTMicroclimate-06; ICTMicroclimate-07; ICTMicroclimate-08; ICTMicroclimate-09; ICTMicroclimate-11
+2025-05-01 ICTMicroclimate-01; ICTMicroclimate-02; ICTMicroclimate-03; ICTMicroclimate-04; ICTMicroclimate-05; ICTMicroclimate-06; ICTMicroclimate-07; ICTMicroclimate-08; ICTMicroclimate-09; ICTMicroclimate-10; ICTMicroclimate-11
+2025-06-01 ICTMicroclimate-01; ICTMicroclimate-02; ICTMicroclimate-03; ICTMicroclimate-04; ICTMicroclimate-05; ICTMicroclimate-06; ICTMicroclimate-07; ICTMicroclimate-08; ICTMicroclimate-09; ICTMicroclimate-10; ICTMicroclimate-11
+2025-07-01                     ICTMicroclimate-01; ICTMicroclimate-02; ICTMicroclimate-03; ICTMicroclimate-04; ICTMicroclimate-05; ICTMicroclimate-06; ICTMicroclimate-07; ICTMicroclimate-08; ICTMicroclimate-10; ICTMicroclimate-11
+2025-08-01                     ICTMicroclimate-01; ICTMicroclimate-02; ICTMicroclimate-03; ICTMicroclimate-05; ICTMicroclimate-06; ICTMicroclimate-07; ICTMicroclimate-08; ICTMicroclimate-09; ICTMicroclimate-10; ICTMicroclimate-11
+2025-09-01                     ICTMicroclimate-01; ICTMicroclimate-02; ICTMicroclimate-03; ICTMicroclimate-05; ICTMicroclimate-06; ICTMicroclimate-07; ICTMicroclimate-08; ICTMicroclimate-09; ICTMicroclimate-10; ICTMicroclimate-11
+2025-10-01                     ICTMicroclimate-01; ICTMicroclimate-02; ICTMicroclimate-03; ICTMicroclimate-05; ICTMicroclimate-06; ICTMicroclimate-07; ICTMicroclimate-08; ICTMicroclimate-09; ICTMicroclimate-10; ICTMicroclimate-11
+2025-11-01                                         ICTMicroclimate-01; ICTMicroclimate-02; ICTMicroclimate-03; ICTMicroclimate-05; ICTMicroclimate-06; ICTMicroclimate-07; ICTMicroclimate-08; ICTMicroclimate-09; ICTMicroclimate-10
+2025-12-01                     ICTMicroclimate-01; ICTMicroclimate-02; ICTMicroclimate-03; ICTMicroclimate-05; ICTMicroclimate-06; ICTMicroclimate-07; ICTMicroclimate-08; ICTMicroclimate-09; ICTMicroclimate-10; ICTMicroclimate-11
+2026-01-01                     ICTMicroclimate-01; ICTMicroclimate-02; ICTMicroclimate-03; ICTMicroclimate-05; ICTMicroclimate-06; ICTMicroclimate-07; ICTMicroclimate-08; ICTMicroclimate-09; ICTMicroclimate-10; ICTMicroclimate-11
+2026-02-01                     ICTMicroclimate-01; ICTMicroclimate-02; ICTMicroclimate-03; ICTMicroclimate-05; ICTMicroclimate-06; ICTMicroclimate-07; ICTMicroclimate-08; ICTMicroclimate-09; ICTMicroclimate-10; ICTMicroclimate-11
+2026-03-01                     ICTMicroclimate-01; ICTMicroclimate-02; ICTMicroclimate-03; ICTMicroclimate-05; ICTMicroclimate-06; ICTMicroclimate-07; ICTMicroclimate-08; ICTMicroclimate-09; ICTMicroclimate-10; ICTMicroclimate-11
+2026-04-01                     ICTMicroclimate-01; ICTMicroclimate-02; ICTMicroclimate-03; ICTMicroclimate-05; ICTMicroclimate-06; ICTMicroclimate-07; ICTMicroclimate-08; ICTMicroclimate-09; ICTMicroclimate-10; ICTMicroclimate-11
+2026-05-01                     ICTMicroclimate-01; ICTMicroclimate-02; ICTMicroclimate-03; ICTMicroclimate-05; ICTMicroclimate-06; ICTMicroclimate-07; ICTMicroclimate-08; ICTMicroclimate-09; ICTMicroclimate-10; ICTMicroclimate-11
+2026-06-01                                                             ICTMicroclimate-01; ICTMicroclimate-02; ICTMicroclimate-03; ICTMicroclimate-05; ICTMicroclimate-06; ICTMicroclimate-07; ICTMicroclimate-08; ICTMicroclimate-10
+2026-07-01                     ICTMicroclimate-01; ICTMicroclimate-02; ICTMicroclimate-03; ICTMicroclimate-05; ICTMicroclimate-06; ICTMicroclimate-07; ICTMicroclimate-08; ICTMicroclimate-09; ICTMicroclimate-10; ICTMicroclimate-11
+2026-08-01                                         ICTMicroclimate-02; ICTMicroclimate-03; ICTMicroclimate-05; ICTMicroclimate-06; ICTMicroclimate-07; ICTMicroclimate-08; ICTMicroclimate-09; ICTMicroclimate-10; ICTMicroclimate-11</code></pre>
+</div>
+</div>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="../figures/fig6_active_noise_sensors_over_time.png" class="img-fluid figure-img"></p>
+<figcaption>Number and identity of active noise sensors over time</figcaption>
+</figure>
+</div>
+</section>
+<section id="balanced-sensor-sensitivity" class="level3">
+<h3 class="anchored" data-anchor-id="balanced-sensor-sensitivity">Balanced-sensor sensitivity</h3>
+<p>The balanced analysis uses <code>ICTMicroclimate-01</code>, <code>ICTMicroclimate-02</code>, and <code>ICTMicroclimate-03</code> from <strong>1 January 2023 through 30 June 2026</strong>. These are the three earliest noise-bearing sensors with a long common span. The endpoints use the first complete month after sensor 03 began and the last complete month before sensor 01 stopped. Noise is first summarised within sensor and week, then the median is taken across the same three sensors; only weeks containing all three are retained.</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(result<span class="sc">$</span>balanced_comparison)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>        week original_pooled_median balanced_sensor_median
+1 2023-06-26                   69.4                   70.4
+2 2023-09-11                   69.5                   70.7
+3 2023-09-18                   69.6                   70.5
+4 2023-09-25                   69.6                   70.3
+5 2023-10-02                   69.4                   70.5
+6 2023-10-09                   69.6                   70.8</code></pre>
+</div>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tail</span>(result<span class="sc">$</span>balanced_comparison)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>          week original_pooled_median balanced_sensor_median
+143 2026-05-25                  65.20                   62.5
+144 2026-06-01                  66.90                   62.4
+145 2026-06-08                  66.00                   62.3
+146 2026-06-15                  67.50                   62.8
+147 2026-06-22                  63.80                   62.4
+148 2026-06-29                  63.85                   62.4</code></pre>
+</div>
+</div>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="../figures/fig7_balanced_sensor_sensitivity.png" class="img-fluid figure-img"></p>
+<figcaption>Original pooled weekly series and balanced-sensor sensitivity</figcaption>
+</figure>
+</div>
+</section>
+<section id="sensor-standardised-hour-and-weekday-summaries" class="level3">
+<h3 class="anchored" data-anchor-id="sensor-standardised-hour-and-weekday-summaries">Sensor-standardised hour and weekday summaries</h3>
+<p>For equal-sensor summaries, the median is calculated separately for each sensor-hour or sensor-weekday cell, followed by the median across the 11 sensors with valid noise. This prevents devices with more observations from receiving greater weight.</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>result<span class="sc">$</span>hour_comparison</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>   hour pooled_median standardised_median sensor_q25 sensor_q75 sensor_n
+1     0          64.5               63.40     57.375     68.800       11
+2     1          62.8               61.30     55.850     67.750       11
+3     2          62.0               60.00     54.900     67.050       11
+4     3          61.6               58.90     54.550     66.975       11
+5     4          62.1               59.40     55.050     67.800       11
+6     5          63.9               62.30     57.900     68.850       11
+7     6          66.6               65.30     60.975     69.600       11
+8     7          68.2               68.50     63.650     70.050       11
+9     8          68.9               70.10     65.150     70.400       11
+10    9          69.1               70.00     64.850     70.750       11
+11   10          69.2               70.20     65.100     70.800       11
+12   11          69.4               70.40     65.200     70.950       11
+13   12          69.5               69.85     64.750     70.950       11
+14   13          69.6               70.10     65.050     71.100       11
+15   14          69.6               70.20     65.150     71.050       11
+16   15          69.7               70.50     64.750     71.150       11
+17   16          69.7               70.50     64.900     71.250       11
+18   17          69.6               70.40     64.650     71.250       11
+19   18          69.3               69.40     63.750     70.700       11
+20   19          68.8               68.40     62.650     70.250       11
+21   20          68.2               67.00     61.050     70.150       11
+22   21          67.7               65.60     60.350     70.100       11
+23   22          67.6               65.00     60.650     69.900       11
+24   23          66.5               64.40     59.550     69.250       11</code></pre>
+</div>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>result<span class="sc">$</span>weekday_comparison</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>    weekday pooled_median standardised_median sensor_q25 sensor_q75 sensor_n
+1    Monday          67.8               66.70      62.00      69.80       11
+2   Tuesday          68.0               67.70      62.10      70.00       11
+3 Wednesday          68.2               67.80      62.60      70.10       11
+4  Thursday          68.2               67.80      62.65      70.10       11
+5    Friday          68.3               67.95      62.55      70.30       11
+6  Saturday          67.8               66.60      60.95      70.00       11
+7    Sunday          67.3               65.20      59.95      69.35       11</code></pre>
+</div>
+</div>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="../figures/fig8_hourly_sensor_standardised.png" class="img-fluid figure-img"></p>
+<figcaption>Hourly pooled and sensor-standardised summaries</figcaption>
+</figure>
+</div>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="../figures/fig9_weekday_sensor_standardised.png" class="img-fluid figure-img"></p>
+<figcaption>Weekday pooled and sensor-standardised summaries</figcaption>
+</figure>
+</div>
+</section>
+</section>
+<section id="spatial-and-sensor-summaries" class="level2">
+<h2 class="anchored" data-anchor-id="spatial-and-sensor-summaries">Spatial and sensor summaries</h2>
+<p>Sensor-level comparisons describe <strong>high- or low-noise monitored locations</strong>, not definitive Melbourne-wide hotspots. The network observes only its installed locations, and sensors have unequal temporal coverage.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="../figures/fig4_noise_by_sensor.png" class="img-fluid figure-img"></p>
+<figcaption>Recorded noise by sensor</figcaption>
+</figure>
+</div>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="../figures/fig5_sensor_location_map.png" class="img-fluid figure-img"></p>
+<figcaption>Sensor location map</figcaption>
+</figure>
+</div>
+<p>The map uses the official City of Melbourne municipal boundary downloaded from the City of Melbourne Open Data Portal. Point size encodes each valid sensor’s median noise; <code>aws5-0999</code> is marked separately because it has no valid noise observations. This remains a monitored-location map, not a city-wide hotspot map.</p>
+</section>
+<section id="noise-metadata-review" class="level2">
+<h2 class="anchored" data-anchor-id="noise-metadata-review">Noise metadata review</h2>
+<p>No local project file documents the noise unit, sensor model, calibration procedure, noise-specific quality flag, or interpretation of zero. The <a href="https://data.melbourne.vic.gov.au/explore/dataset/microclimate-sensors-data/">current City of Melbourne dataset page</a> identifies <code>Noise</code> only as a decimal field and notes that 15-minute readings may be missing. A related <a href="https://data.melbourne.vic.gov.au/api/datasets/1.0/microclimate-sensor-readings/attachments/microclimatesensors_metadata_attachment_datadictionary_1_pdf/">historical official data dictionary</a> documents units and quality flags for several other microclimate fields but does not include a noise sensor entry. Authoritative noise-specific metadata therefore still needs to be obtained or confirmed with the dataset owner; values remain labelled as <strong>dataset units</strong>, and zeros are retained as unresolved potential quality issues.</p>
+</section>
+<section id="outputs" class="level2">
+<h2 class="anchored" data-anchor-id="outputs">Outputs</h2>
+<p>The analysis writes reusable summaries to <code>data/processed/</code>, figures to <code>figures/</code>, and the interpretation and research-question feasibility assessment to <code>analysis/noise_eda_summary.md</code>.</p>
+</section>
+
+</main>
+<!-- /main column -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>
