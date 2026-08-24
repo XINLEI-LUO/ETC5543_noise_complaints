@@ -93,3 +93,77 @@ fig4 <- ggplot(bars_trend, aes(x = `Census year`, y = total_capacity)) +
 
 print(fig4)
 ggsave(paste0(fig_path, "fig4_cbd_patron_capacity_trend.png"), fig4, width = 8, height = 5, dpi = 150)
+
+# PART 2: DATA CLEANING AND FEATURE PREPARATION
+
+
+# Clean bars/pubs 
+bars_clean <- bars |>
+  rename(
+    year       = `Census year`,
+    block_id   = `Block ID`,
+    area       = `CLUE small area`,
+    venue_name = `Trading name`,
+    n_patrons  = `Number of patrons`,
+    lat        = Latitude,
+    lon        = Longitude
+  ) |>
+  filter(!is.na(lat), !is.na(lon), !is.na(block_id)) |>
+  select(year, block_id, area, venue_name, n_patrons, lat, lon)
+
+glimpse(bars_clean)
+
+# Clean cafes/restaurants 
+cafes_clean <- cafes |>
+  rename(
+    year         = `Census year`,
+    block_id     = `Block ID`,
+    area         = `CLUE small area`,
+    venue_name   = `Trading name`,
+    seating_type = `Seating type`,
+    n_seats      = `Number of seats`,
+    lat          = Latitude,
+    lon          = Longitude
+  ) |>
+  filter(!is.na(lat), !is.na(lon), !is.na(block_id)) |>
+  select(year, block_id, area, venue_name, seating_type, n_seats, lat, lon)
+
+glimpse(cafes_clean)
+
+# Block-level feature table (2024)
+bar_features <- bars_clean |>
+  filter(year == 2024) |>
+  group_by(block_id) |>
+  summarise(
+    n_bars         = n(),
+    total_patrons  = sum(n_patrons, na.rm = TRUE),
+    median_patrons = median(n_patrons, na.rm = TRUE)
+  )
+
+cafe_features <- cafes_clean |>
+  filter(year == 2024) |>
+  group_by(block_id, seating_type) |>
+  summarise(n_seats = sum(n_seats, na.rm = TRUE), .groups = "drop") |>
+  pivot_wider(names_from = seating_type, values_from = n_seats, values_fill = 0) |>
+  rename_with(~str_replace_all(tolower(.), "[^a-z0-9]", "_"))
+
+block_features <- bar_features |>
+  full_join(cafe_features, by = "block_id") |>
+  replace_na(list(n_bars = 0, total_patrons = 0))
+
+glimpse(block_features)
+
+# Check pedestrian sensors
+glimpse(ped_sensors)
+ped_sensors |> count(Status)
+
+# Save cleaned datasets
+dir.create("data/processed", showWarnings = FALSE)
+
+write_csv(bars_clean,     "data/processed/bars_clean.csv")
+write_csv(cafes_clean,    "data/processed/cafes_clean.csv")
+write_csv(block_features, "data/processed/block_nightlife_features_2024.csv")
+write_csv(ped_sensors, "data/processed/pedestrian_sensors_clean.csv")
+
+message("✅ Cleaned datasets saved to data/processed/")
+
