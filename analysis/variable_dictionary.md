@@ -38,7 +38,7 @@ One row per café/restaurant seating type per venue per year (2007–2024).
 One row per CLUE block. **This is the main file for Chen's spatial integration.**
 
 | Variable           | Type    | Description                                  |
-|------------------------|------------------|------------------------------|
+|--------------------|---------|----------------------------------------------|
 | block_id           | numeric | CLUE block identifier, join key              |
 | n_bars             | numeric | Number of bars/pubs in block (2024)          |
 | total_patrons      | numeric | Sum of licensed patron capacity in block     |
