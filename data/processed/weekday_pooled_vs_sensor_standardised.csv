@@ -1,0 +1,8 @@
+"weekday","pooled_median","standardised_median","sensor_q25","sensor_q75","sensor_n"
+"Monday",67.8,66.7,62,69.8,11
+"Tuesday",68,67.7,62.1,70,11
+"Wednesday",68.2,67.8,62.6,70.1,11
+"Thursday",68.2,67.8,62.65,70.1,11
+"Friday",68.3,67.95,62.55,70.3,11
+"Saturday",67.8,66.6,60.95,70,11
+"Sunday",67.3,65.2,59.95,69.35,11

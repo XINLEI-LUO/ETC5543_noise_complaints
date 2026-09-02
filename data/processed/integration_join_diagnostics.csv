@@ -1,0 +1,6 @@
+source_dataset,source_data_year,original_rows,selected_year_rows,unique_venues,valid_coordinates,invalid_or_missing_coordinates,inside_at_least_one_buffer,missing_capacity_or_seating,crs_before,crs_after,coordinate_order_issue,join_failure,outside_all_buffers,percentage_matched,overlapping_sensor_buffer_polygon_pairs,buffer_m,sensors_zero_bars,sensors_zero_cafes
+bars,2024,5304,304,304,304,0,249,0,EPSG:4326,EPSG:7855,FALSE,FALSE,55,81.90789473684211,262,,,
+cafes,2024,66356,3249,2248,2248,0,1628,0,EPSG:4326,EPSG:7855,FALSE,FALSE,620,72.41992882562278,262,,,
+sensor_buffer_summary,2024,,,,,,,,,,,,,,,250,2,0
+sensor_buffer_summary,2024,,,,,,,,,,,,,,,500,0,0
+sensor_buffer_summary,2024,,,,,,,,,,,,,,,1000,0,0

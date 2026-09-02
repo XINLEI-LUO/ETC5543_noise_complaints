@@ -1,0 +1,90 @@
+start_date,end_date,days,sensor_ids
+2022/5/31,2022/6/1,2,None
+2022/6/2,2022/6/3,2,ICTMicroclimate-01
+2022/6/4,2022/11/7,157,None
+2022/11/8,2022/11/8,1,ICTMicroclimate-02
+2022/11/9,2022/11/9,1,None
+2022/11/10,2022/11/22,13,ICTMicroclimate-01
+2022/11/23,2022/11/23,1,ICTMicroclimate-01; ICTMicroclimate-02
+2022/11/24,2022/11/24,1,ICTMicroclimate-02
+2022/11/25,2022/11/29,5,None
+2022/11/30,2022/11/30,1,ICTMicroclimate-01
+2022/12/1,2022/12/1,1,ICTMicroclimate-01; ICTMicroclimate-02
+2022/12/2,2022/12/6,5,ICTMicroclimate-01
+2022/12/7,2022/12/8,2,ICTMicroclimate-01; ICTMicroclimate-02
+2022/12/9,2022/12/20,12,ICTMicroclimate-01
+2022/12/21,2023/1/4,15,ICTMicroclimate-01; ICTMicroclimate-03
+2023/1/5,2023/1/9,5,ICTMicroclimate-01
+2023/1/10,2023/1/18,9,ICTMicroclimate-01; ICTMicroclimate-03
+2023/1/19,2023/1/24,6,ICTMicroclimate-01
+2023/1/25,2023/1/28,4,ICTMicroclimate-01; ICTMicroclimate-03
+2023/1/29,2023/2/14,17,ICTMicroclimate-01
+2023/2/15,2023/2/21,7,None
+2023/2/22,2023/3/7,14,ICTMicroclimate-02
+2023/3/8,2023/3/19,12,None
+2023/3/20,2023/3/21,2,ICTMicroclimate-03
+2023/3/22,2023/3/22,1,None
+2023/3/23,2023/4/18,27,ICTMicroclimate-01
+2023/4/19,2023/6/26,69,ICTMicroclimate-01; ICTMicroclimate-03
+2023/6/27,2023/7/1,5,ICTMicroclimate-01; ICTMicroclimate-02; ICTMicroclimate-03
+2023/7/2,2023/8/3,33,ICTMicroclimate-01; ICTMicroclimate-03
+2023/8/4,2023/8/7,4,ICTMicroclimate-01; ICTMicroclimate-03; ICTMicroclimate-04; ICTMicroclimate-05
+2023/8/8,2023/8/8,1,ICTMicroclimate-01; ICTMicroclimate-03; ICTMicroclimate-05
+2023/8/9,2023/8/21,13,ICTMicroclimate-01; ICTMicroclimate-03
+2023/8/22,2023/8/27,6,ICTMicroclimate-01; ICTMicroclimate-03; ICTMicroclimate-04; ICTMicroclimate-05
+2023/8/28,2023/9/4,8,ICTMicroclimate-01; ICTMicroclimate-03; ICTMicroclimate-04
+2023/9/5,2023/9/11,7,ICTMicroclimate-01; ICTMicroclimate-03; ICTMicroclimate-04; ICTMicroclimate-05
+2023/9/12,2023/12/10,90,ICTMicroclimate-01; ICTMicroclimate-02; ICTMicroclimate-03; ICTMicroclimate-04; ICTMicroclimate-05
+2023/12/11,2023/12/12,2,ICTMicroclimate-01; ICTMicroclimate-02; ICTMicroclimate-03; ICTMicroclimate-04; ICTMicroclimate-05; ICTMicroclimate-06; ICTMicroclimate-07; ICTMicroclimate-08; ICTMicroclimate-09
+2023/12/13,2024/3/27,106,ICTMicroclimate-01; ICTMicroclimate-02; ICTMicroclimate-03; ICTMicroclimate-04; ICTMicroclimate-05
+2024/3/28,2024/3/30,3,ICTMicroclimate-01; ICTMicroclimate-02; ICTMicroclimate-03; ICTMicroclimate-04; ICTMicroclimate-05; ICTMicroclimate-06; ICTMicroclimate-07
+2024/3/31,2024/4/1,2,ICTMicroclimate-01; ICTMicroclimate-02; ICTMicroclimate-03; ICTMicroclimate-04; ICTMicroclimate-06; ICTMicroclimate-07
+2024/4/2,2024/4/6,5,ICTMicroclimate-01; ICTMicroclimate-02; ICTMicroclimate-03; ICTMicroclimate-04; ICTMicroclimate-05; ICTMicroclimate-06; ICTMicroclimate-07
+2024/4/7,2024/4/8,2,ICTMicroclimate-01; ICTMicroclimate-02; ICTMicroclimate-03; ICTMicroclimate-04; ICTMicroclimate-06; ICTMicroclimate-07
+2024/4/9,2024/4/9,1,ICTMicroclimate-01; ICTMicroclimate-02; ICTMicroclimate-03; ICTMicroclimate-04; ICTMicroclimate-06; ICTMicroclimate-07; ICTMicroclimate-08
+2024/4/10,2024/5/24,45,ICTMicroclimate-01; ICTMicroclimate-02; ICTMicroclimate-03; ICTMicroclimate-04; ICTMicroclimate-06; ICTMicroclimate-07; ICTMicroclimate-08; ICTMicroclimate-09
+2024/5/25,2024/5/25,1,ICTMicroclimate-01; ICTMicroclimate-02; ICTMicroclimate-03; ICTMicroclimate-06; ICTMicroclimate-07; ICTMicroclimate-08; ICTMicroclimate-09
+2024/5/26,2024/5/29,4,ICTMicroclimate-01; ICTMicroclimate-02; ICTMicroclimate-03; ICTMicroclimate-04; ICTMicroclimate-06; ICTMicroclimate-07; ICTMicroclimate-08; ICTMicroclimate-09
+2024/5/30,2024/6/5,7,ICTMicroclimate-01; ICTMicroclimate-02; ICTMicroclimate-03; ICTMicroclimate-06; ICTMicroclimate-07; ICTMicroclimate-08; ICTMicroclimate-09
+2024/6/6,2024/6/6,1,ICTMicroclimate-01; ICTMicroclimate-02; ICTMicroclimate-03; ICTMicroclimate-04; ICTMicroclimate-06; ICTMicroclimate-07; ICTMicroclimate-08; ICTMicroclimate-09
+2024/6/7,2024/6/11,5,ICTMicroclimate-01; ICTMicroclimate-02; ICTMicroclimate-03; ICTMicroclimate-06; ICTMicroclimate-07; ICTMicroclimate-08; ICTMicroclimate-09
+2024/6/12,2024/6/12,1,ICTMicroclimate-01; ICTMicroclimate-02; ICTMicroclimate-03; ICTMicroclimate-04; ICTMicroclimate-06; ICTMicroclimate-07; ICTMicroclimate-08; ICTMicroclimate-09
+2024/6/13,2024/6/17,5,ICTMicroclimate-01; ICTMicroclimate-02; ICTMicroclimate-03; ICTMicroclimate-06; ICTMicroclimate-07; ICTMicroclimate-08; ICTMicroclimate-09
+2024/6/18,2024/6/18,1,ICTMicroclimate-01; ICTMicroclimate-02; ICTMicroclimate-03; ICTMicroclimate-04; ICTMicroclimate-06; ICTMicroclimate-07; ICTMicroclimate-08; ICTMicroclimate-09
+2024/6/19,2024/7/1,13,ICTMicroclimate-01; ICTMicroclimate-02; ICTMicroclimate-03; ICTMicroclimate-06; ICTMicroclimate-07; ICTMicroclimate-08; ICTMicroclimate-09
+2024/7/2,2024/7/4,3,ICTMicroclimate-01; ICTMicroclimate-02; ICTMicroclimate-03; ICTMicroclimate-05; ICTMicroclimate-06; ICTMicroclimate-07; ICTMicroclimate-08; ICTMicroclimate-09
+2024/7/5,2024/8/12,39,ICTMicroclimate-01; ICTMicroclimate-02; ICTMicroclimate-03; ICTMicroclimate-06; ICTMicroclimate-07; ICTMicroclimate-08; ICTMicroclimate-09
+2024/8/13,2024/9/4,23,ICTMicroclimate-01; ICTMicroclimate-02; ICTMicroclimate-03; ICTMicroclimate-06; ICTMicroclimate-07; ICTMicroclimate-08; ICTMicroclimate-09; ICTMicroclimate-10
+2024/9/5,2024/9/5,1,ICTMicroclimate-01; ICTMicroclimate-02; ICTMicroclimate-03; ICTMicroclimate-06; ICTMicroclimate-07; ICTMicroclimate-08; ICTMicroclimate-09; ICTMicroclimate-10; ICTMicroclimate-11
+2024/9/6,2024/9/23,18,ICTMicroclimate-01; ICTMicroclimate-02; ICTMicroclimate-03; ICTMicroclimate-04; ICTMicroclimate-05; ICTMicroclimate-06; ICTMicroclimate-07; ICTMicroclimate-08; ICTMicroclimate-09; ICTMicroclimate-10
+2024/9/24,2024/9/24,1,ICTMicroclimate-01; ICTMicroclimate-02; ICTMicroclimate-03; ICTMicroclimate-04; ICTMicroclimate-05; ICTMicroclimate-06; ICTMicroclimate-07; ICTMicroclimate-08; ICTMicroclimate-09; ICTMicroclimate-10; ICTMicroclimate-11
+2024/9/25,2024/9/25,1,ICTMicroclimate-01; ICTMicroclimate-02; ICTMicroclimate-03; ICTMicroclimate-04; ICTMicroclimate-06; ICTMicroclimate-07; ICTMicroclimate-08; ICTMicroclimate-09; ICTMicroclimate-10
+2024/9/26,2024/11/18,54,ICTMicroclimate-01; ICTMicroclimate-02; ICTMicroclimate-03; ICTMicroclimate-04; ICTMicroclimate-06; ICTMicroclimate-07; ICTMicroclimate-08; ICTMicroclimate-09; ICTMicroclimate-10; ICTMicroclimate-11
+2024/11/19,2025/1/28,71,ICTMicroclimate-01; ICTMicroclimate-02; ICTMicroclimate-03; ICTMicroclimate-04; ICTMicroclimate-05; ICTMicroclimate-06; ICTMicroclimate-07; ICTMicroclimate-08; ICTMicroclimate-09; ICTMicroclimate-10; ICTMicroclimate-11
+2025/1/29,2025/5/19,111,ICTMicroclimate-01; ICTMicroclimate-02; ICTMicroclimate-03; ICTMicroclimate-04; ICTMicroclimate-05; ICTMicroclimate-06; ICTMicroclimate-07; ICTMicroclimate-08; ICTMicroclimate-09; ICTMicroclimate-11
+2025/5/20,2025/6/6,18,ICTMicroclimate-01; ICTMicroclimate-02; ICTMicroclimate-03; ICTMicroclimate-04; ICTMicroclimate-05; ICTMicroclimate-06; ICTMicroclimate-07; ICTMicroclimate-08; ICTMicroclimate-09; ICTMicroclimate-10; ICTMicroclimate-11
+2025/6/7,2025/6/19,13,ICTMicroclimate-01; ICTMicroclimate-02; ICTMicroclimate-03; ICTMicroclimate-05; ICTMicroclimate-06; ICTMicroclimate-07; ICTMicroclimate-08; ICTMicroclimate-09; ICTMicroclimate-10; ICTMicroclimate-11
+2025/6/20,2025/6/20,1,ICTMicroclimate-01; ICTMicroclimate-02; ICTMicroclimate-03; ICTMicroclimate-04; ICTMicroclimate-05; ICTMicroclimate-06; ICTMicroclimate-07; ICTMicroclimate-08; ICTMicroclimate-09; ICTMicroclimate-10; ICTMicroclimate-11
+2025/6/21,2025/6/22,2,ICTMicroclimate-01; ICTMicroclimate-02; ICTMicroclimate-03; ICTMicroclimate-05; ICTMicroclimate-06; ICTMicroclimate-07; ICTMicroclimate-08; ICTMicroclimate-09; ICTMicroclimate-10; ICTMicroclimate-11
+2025/6/23,2025/6/26,4,ICTMicroclimate-01; ICTMicroclimate-02; ICTMicroclimate-03; ICTMicroclimate-05; ICTMicroclimate-06; ICTMicroclimate-07; ICTMicroclimate-08; ICTMicroclimate-10; ICTMicroclimate-11
+2025/6/27,2025/6/27,1,ICTMicroclimate-01; ICTMicroclimate-02; ICTMicroclimate-03; ICTMicroclimate-04; ICTMicroclimate-05; ICTMicroclimate-06; ICTMicroclimate-07; ICTMicroclimate-08; ICTMicroclimate-10; ICTMicroclimate-11
+2025/6/28,2025/7/10,13,ICTMicroclimate-01; ICTMicroclimate-02; ICTMicroclimate-03; ICTMicroclimate-05; ICTMicroclimate-06; ICTMicroclimate-07; ICTMicroclimate-08; ICTMicroclimate-10; ICTMicroclimate-11
+2025/7/11,2025/7/11,1,ICTMicroclimate-01; ICTMicroclimate-02; ICTMicroclimate-03; ICTMicroclimate-04; ICTMicroclimate-05; ICTMicroclimate-06; ICTMicroclimate-07; ICTMicroclimate-08; ICTMicroclimate-10; ICTMicroclimate-11
+2025/7/12,2025/7/18,7,ICTMicroclimate-01; ICTMicroclimate-02; ICTMicroclimate-03; ICTMicroclimate-05; ICTMicroclimate-06; ICTMicroclimate-07; ICTMicroclimate-08; ICTMicroclimate-10; ICTMicroclimate-11
+2025/7/19,2025/7/19,1,ICTMicroclimate-01; ICTMicroclimate-02; ICTMicroclimate-03; ICTMicroclimate-04; ICTMicroclimate-05; ICTMicroclimate-06; ICTMicroclimate-07; ICTMicroclimate-08; ICTMicroclimate-10; ICTMicroclimate-11
+2025/7/20,2025/7/28,9,ICTMicroclimate-01; ICTMicroclimate-02; ICTMicroclimate-03; ICTMicroclimate-05; ICTMicroclimate-06; ICTMicroclimate-07; ICTMicroclimate-08; ICTMicroclimate-10; ICTMicroclimate-11
+2025/7/29,2025/7/29,1,ICTMicroclimate-01; ICTMicroclimate-02; ICTMicroclimate-03; ICTMicroclimate-04; ICTMicroclimate-05; ICTMicroclimate-06; ICTMicroclimate-07; ICTMicroclimate-08; ICTMicroclimate-10; ICTMicroclimate-11
+2025/7/30,2025/8/28,30,ICTMicroclimate-01; ICTMicroclimate-02; ICTMicroclimate-03; ICTMicroclimate-05; ICTMicroclimate-06; ICTMicroclimate-07; ICTMicroclimate-08; ICTMicroclimate-10; ICTMicroclimate-11
+2025/8/29,2025/10/4,37,ICTMicroclimate-01; ICTMicroclimate-02; ICTMicroclimate-03; ICTMicroclimate-05; ICTMicroclimate-06; ICTMicroclimate-07; ICTMicroclimate-08; ICTMicroclimate-09; ICTMicroclimate-10; ICTMicroclimate-11
+2025/10/5,2025/10/7,3,ICTMicroclimate-01; ICTMicroclimate-02; ICTMicroclimate-03; ICTMicroclimate-05; ICTMicroclimate-06; ICTMicroclimate-07; ICTMicroclimate-08; ICTMicroclimate-09; ICTMicroclimate-11
+2025/10/8,2025/11/6,30,ICTMicroclimate-01; ICTMicroclimate-02; ICTMicroclimate-03; ICTMicroclimate-05; ICTMicroclimate-06; ICTMicroclimate-07; ICTMicroclimate-08; ICTMicroclimate-09
+2025/11/7,2025/11/7,1,ICTMicroclimate-01; ICTMicroclimate-02; ICTMicroclimate-03; ICTMicroclimate-05; ICTMicroclimate-06; ICTMicroclimate-07; ICTMicroclimate-08; ICTMicroclimate-09; ICTMicroclimate-10
+2025/11/8,2025/12/17,40,ICTMicroclimate-01; ICTMicroclimate-02; ICTMicroclimate-03; ICTMicroclimate-05; ICTMicroclimate-06; ICTMicroclimate-07; ICTMicroclimate-08; ICTMicroclimate-09
+2025/12/18,2026/5/6,140,ICTMicroclimate-01; ICTMicroclimate-02; ICTMicroclimate-03; ICTMicroclimate-05; ICTMicroclimate-06; ICTMicroclimate-07; ICTMicroclimate-08; ICTMicroclimate-09; ICTMicroclimate-10; ICTMicroclimate-11
+2026/5/7,2026/5/16,10,ICTMicroclimate-01; ICTMicroclimate-02; ICTMicroclimate-03; ICTMicroclimate-05; ICTMicroclimate-06; ICTMicroclimate-07; ICTMicroclimate-08; ICTMicroclimate-09; ICTMicroclimate-10
+2026/5/17,2026/7/1,46,ICTMicroclimate-01; ICTMicroclimate-02; ICTMicroclimate-03; ICTMicroclimate-05; ICTMicroclimate-06; ICTMicroclimate-07; ICTMicroclimate-08; ICTMicroclimate-10
+2026/7/2,2026/7/8,7,ICTMicroclimate-02; ICTMicroclimate-03; ICTMicroclimate-05; ICTMicroclimate-06; ICTMicroclimate-07; ICTMicroclimate-08; ICTMicroclimate-10
+2026/7/9,2026/7/22,14,ICTMicroclimate-03; ICTMicroclimate-08
+2026/7/23,2026/7/29,7,ICTMicroclimate-02; ICTMicroclimate-03; ICTMicroclimate-05; ICTMicroclimate-06; ICTMicroclimate-07; ICTMicroclimate-08; ICTMicroclimate-10; ICTMicroclimate-11
+2026/7/30,2026/8/9,11,ICTMicroclimate-02; ICTMicroclimate-03; ICTMicroclimate-05; ICTMicroclimate-06; ICTMicroclimate-07; ICTMicroclimate-08; ICTMicroclimate-09; ICTMicroclimate-10; ICTMicroclimate-11
+2026/8/10,2026/8/17,8,ICTMicroclimate-02; ICTMicroclimate-03; ICTMicroclimate-05; ICTMicroclimate-06; ICTMicroclimate-07; ICTMicroclimate-08; ICTMicroclimate-10; ICTMicroclimate-11
