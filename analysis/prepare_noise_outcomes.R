@@ -116,6 +116,66 @@ sensor_locations <- sensor_audit[
   )
 ]
 
+# Integration-level outcomes: one row per usable sensor. Day/night and
+# weekday/weekend are defined in Melbourne local time. The coverage denominator
+# is the number of 15-minute slots from the first through the last observation,
+# inclusive. Raw zero values and duplicate timestamp rows remain in the outcome.
+noise_data$local_hour <- as.integer(format(noise_data$timestamp, "%H", tz = melbourne_tz))
+noise_data$local_weekday <- as.integer(format(noise_data$timestamp, "%u", tz = melbourne_tz))
+
+safe_median <- function(x) {
+  x <- x[is.finite(x)]
+  if (length(x)) median(x) else NA_real_
+}
+
+integration_outcomes <- do.call(rbind, lapply(usable_ids, function(device_id) {
+  z <- noise_data[noise_data$Device_id == device_id, , drop = FALSE]
+  valid <- is.finite(z$Noise)
+  first_time <- safe_min_time(z$timestamp)
+  last_time <- safe_max_time(z$timestamp)
+  expected_15_min <- floor(as.numeric(difftime(last_time, first_time, units = "secs")) / 900) + 1L
+  coverage_ratio <- sum(valid) / expected_15_min
+
+  if (!is.finite(coverage_ratio) || coverage_ratio < 0 || coverage_ratio > 1) {
+    stop(
+      "coverage_ratio is outside [0, 1] for ", device_id,
+      ". Check duplicate timestamps and the expected-observation denominator."
+    )
+  }
+
+  loc <- sensor_locations[sensor_locations$device_id == device_id, , drop = FALSE]
+  daytime <- z$local_hour >= 6L & z$local_hour < 18L
+  weekday <- z$local_weekday <= 5L
+
+  data.frame(
+    device_id = device_id,
+    sensor_location = loc$sensor_location,
+    longitude = loc$longitude,
+    latitude = loc$latitude,
+    first_observation = format_timestamp(first_time),
+    last_observation = format_timestamp(last_time),
+    coverage_days = as.numeric(difftime(last_time, first_time, units = "days")),
+    n_total_observations = nrow(z),
+    n_valid_noise = sum(valid),
+    n_missing_noise = sum(!valid),
+    n_zero_noise = sum(z$Noise[valid] == 0),
+    coverage_ratio = coverage_ratio,
+    overall_median_noise = safe_median(z$Noise),
+    daytime_median_noise = safe_median(z$Noise[daytime]),
+    nighttime_median_noise = safe_median(z$Noise[!daytime]),
+    weekday_median_noise = safe_median(z$Noise[weekday]),
+    weekend_median_noise = safe_median(z$Noise[!weekday]),
+    n_overall_noise = sum(valid),
+    n_daytime_noise = sum(valid & daytime),
+    n_nighttime_noise = sum(valid & !daytime),
+    n_weekday_noise = sum(valid & weekday),
+    n_weekend_noise = sum(valid & !weekday),
+    stringsAsFactors = FALSE
+  )
+}))
+rownames(integration_outcomes) <- NULL
+integration_outcomes <- integration_outcomes[order(integration_outcomes$device_id), ]
+
 # UTC-aligned elapsed-hour keys preserve repeated local clock hours at daylight-
 # saving transitions; the formatted timestamp includes its UTC offset.
 noise_data$hour_epoch <- floor(as.numeric(noise_data$timestamp) / 3600) * 3600
@@ -146,8 +206,10 @@ summarise_groups <- function(data, group_key, expected_obs) {
       n_unique_valid_timestamps = unique_valid_timestamp_n,
       n_zero_noise = sum(valid_values == 0),
       expected_obs = expected_obs,
-      coverage_ratio = valid_n / expected_obs,
-      unique_coverage_ratio = unique_valid_timestamp_n / expected_obs,
+      raw_row_coverage_ratio = valid_n / expected_obs,
+      unique_timestamp_coverage_ratio = unique_valid_timestamp_n / expected_obs,
+      coverage_ratio = min(unique_valid_timestamp_n / expected_obs, 1),
+      unique_coverage_ratio = min(unique_valid_timestamp_n / expected_obs, 1),
       is_complete = unique_valid_timestamp_n >= expected_obs,
       stringsAsFactors = FALSE
     )
@@ -245,6 +307,7 @@ pct_near_15_minutes <- 100 * mean(timestamp_gaps >= 12 & timestamp_gaps <= 18)
 
 write.csv(sensor_audit, file.path(processed_dir, "noise_sensor_audit.csv"), row.names = FALSE, na = "")
 write.csv(sensor_locations, file.path(processed_dir, "noise_sensor_locations.csv"), row.names = FALSE, na = "")
+write.csv(integration_outcomes, file.path(processed_dir, "noise_outcomes_for_integration.csv"), row.names = FALSE, na = "")
 write.csv(noise_sensor_hour, file.path(processed_dir, "noise_sensor_hour.csv"), row.names = FALSE, na = "")
 write.csv(noise_sensor_day, file.path(processed_dir, "noise_sensor_day.csv"), row.names = FALSE, na = "")
 
@@ -254,6 +317,7 @@ complete_day_pct <- 100 * mean(noise_sensor_day$is_complete_day)
 message("Noise outcome preparation complete.")
 message("Raw devices: ", nrow(sensor_audit), "; usable noise sensors: ", length(usable_ids))
 message("Rows written - locations: ", nrow(sensor_locations),
+        "; integration outcomes: ", nrow(integration_outcomes),
         "; sensor-hour: ", nrow(noise_sensor_hour),
         "; sensor-day: ", nrow(noise_sensor_day))
 message("Outcome date range: ", min(noise_sensor_day$date), " to ", max(noise_sensor_day$date))
