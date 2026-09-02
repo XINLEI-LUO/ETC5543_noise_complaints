@@ -1,0 +1,12 @@
+device_id,sensor_location,latitude,longitude,n_bars_250m,n_bars_500m,n_bars_1000m,total_patron_cap_250m,total_patron_cap_500m,total_patron_cap_1000m,indoor_seats_250m,indoor_seats_500m,indoor_seats_1000m,outdoor_seats_250m,outdoor_seats_500m,outdoor_seats_1000m,n_bars_missing_cap_250m,n_bars_missing_cap_500m,n_bars_missing_cap_1000m,n_indoor_missing_seats_250m,n_indoor_missing_seats_500m,n_indoor_missing_seats_1000m,n_outdoor_missing_seats_250m,n_outdoor_missing_seats_500m,n_outdoor_missing_seats_1000m
+ICTMicroclimate-01,Birrarung Marr Park - Pole 1131,-37.8185931,144.9716404,7,24,127,3966,8803,36925,1410,9151,54590,1561,2412,8614,0,0,0,0,0,0,0,0,0
+ICTMicroclimate-02,101 Collins St L11 Rooftop,-37.814604,144.9702991,22,84,184,7281,24691,51692,9391,31309,67309,893,4375,11421,0,0,0,0,0,0,0,0,0
+ICTMicroclimate-03,CH1 rooftop,-37.8140348,144.96728,24,111,197,7431,30436,54648,8090,40204,75931,560,5330,13088,0,0,0,0,0,0,0,0,0
+ICTMicroclimate-04,Batman Park,-37.8221828,144.9562225,9,27,90,2189,8973,32541,5856,13766,44186,738,2428,9147,0,0,0,0,0,0,0,0,0
+ICTMicroclimate-05,Enterprize Park - Pole ID: COM1667,-37.8204083,144.9591192,5,43,128,1407,12193,40982,2612,18011,57653,381,2910,12942,0,0,0,0,0,0,0,0,0
+ICTMicroclimate-06,Tram Stop 7B – Melbourne Tennis Centre Precinct – Rod Laver Arena,-37.8194993,144.9787211,0,1,32,0,2800,13755,53,8294,21155,15,271,3128,0,0,0,0,0,0,0,0,0
+ICTMicroclimate-07,Tram Stop 7C – Melbourne Tennis Centre Precinct – Rod Laver Arena,-37.8222341,144.9829409,0,1,3,0,2800,3157,4920,8380,9577,50,295,978,0,0,0,0,0,0,0,0,0
+ICTMicroclimate-08,Swanston St - Tram Stop 13 adjacent Federation Sq & Flinders St Station,-37.8184515,144.9678474,12,49,190,5454,16086,53743,2775,17203,72442,2213,4934,12214,0,0,0,0,0,0,0,0,0
+ICTMicroclimate-09,SkyFarm (Jeff’s Shed). Rooftop - Melbourne Conference & Exhibition Centre (MCEC),-37.8223306,144.9521696,2,15,62,1150,7072,24939,962,7679,35358,407,2666,7602,0,0,0,0,0,0,0,0,0
+ICTMicroclimate-10,1 Treasury Place,-37.8128595,144.9745395,5,33,119,1441,10176,31986,2619,16004,42908,441,2082,6704,0,0,0,0,0,0,0,0,0
+ICTMicroclimate-11,1 Treasury Place,-37.812888,144.9750857,1,28,119,95,7976,31626,1168,13775,42614,211,1962,6465,0,0,0,0,0,0,0,0,0
