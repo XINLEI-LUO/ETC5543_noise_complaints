@@ -1,0 +1,19 @@
+check,status,evidence
+source_2024_rows,PASS,19672
+source_2024_active_records,PASS,14337
+source_2024_vacant_records,PASS,5335
+source_2024_valid_coordinates,PASS,19672
+source_2024_full_row_duplicates,PASS,0
+source_2024_candidate_duplicate_groups,PASS,1
+source_2024_candidate_duplicate_excess_rows,PASS,2
+sensor_buffer_rows,PASS,33
+unique_device_buffer_keys,PASS,0
+expected_buffer_distances,PASS,"250,500,1000"
+eleven_sensors_per_buffer,PASS,250:11;500:11;1000:11
+nonnegative_integer_counts,PASS,All feature counts are non-negative integers
+count_monotonicity,PASS,No failures
+entropy_range,PASS,0.291648 to 0.832510
+density_nonnegative,PASS,57.614 to 4604.034
+join_preserves_existing_rows,PASS,33 before and 33 after
+sensitivity_max_active_count_difference,PASS,0
+sensitivity_max_entropy_difference,PASS,0
