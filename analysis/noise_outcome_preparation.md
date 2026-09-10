@@ -25,7 +25,7 @@ For every sensor-hour and sensor-day, `noise_mean`, `noise_median`, `noise_min`,
 
 `n_observations` counts all source rows in the group, `n_valid_noise` counts finite Noise rows, and `n_missing_noise` is their difference. `n_unique_timestamps` counts distinct timestamps, while `n_unique_valid_timestamps` counts distinct timestamps having at least one finite Noise value. `n_zero_noise` counts retained zero readings. No duplicate row, zero or extreme value is automatically removed.
 
-Hourly coverage uses `expected_obs = 4`; daily coverage uses `expected_obs = 96`. The existing row-based audit field remains `coverage_ratio = n_valid_noise / expected_obs`. The duplicate-resistant field is `unique_coverage_ratio = n_unique_valid_timestamps / expected_obs`. The main hourly and daily completeness flags now require the unique valid timestamp count to meet the expected count, so duplicated rows cannot make a group complete. Incomplete groups are retained.
+Hourly coverage uses `expected_obs = 4`; daily coverage uses `expected_obs = 96`. `raw_row_coverage_ratio = n_valid_noise / expected_obs` is retained as a diagnostic and can exceed 1 when repeated timestamp rows are present. `unique_timestamp_coverage_ratio = n_unique_valid_timestamps / expected_obs` is the uncapped duplicate-resistant diagnostic. The operational `coverage_ratio = pmin(unique_timestamp_coverage_ratio, 1)` is therefore restricted to [0, 1]; `unique_coverage_ratio` remains as a backward-compatible alias of this capped measure. The main hourly and daily completeness flags require the unique valid timestamp count to meet the expected count, so duplicated rows cannot make a group complete. Incomplete groups are retained.
 
 ## Validation results
 
@@ -35,7 +35,7 @@ Hourly coverage uses `expected_obs = 4`; daily coverage uses `expected_obs = 96`
 - Positive timestamp gaps have a median of 15.03 minutes, and 93.85% fall between 12 and 18 minutes. This supports four-per-hour and 96-per-day as practical reference counts, not guaranteed schedules.
 - 215,497 sensor-hours (94.42%) meet the unique-timestamp hourly completeness rule; 12,744 (5.58%) do not.
 - 5,678 sensor-days (59.17%) meet the unique-timestamp daily completeness rule; 3,918 (40.83%) do not.
-- The raw data contain 2,745 duplicated `device_id + timestamp` groups (2,751 excess rows beyond one row per key). These records are retained rather than silently deduplicated. Consequently, the row-based `coverage_ratio` can exceed 1, while duplicate records do not inflate `unique_coverage_ratio` or the completeness flags.
+- The raw data contain 2,745 duplicated `device_id + timestamp` groups (2,751 excess rows beyond one row per key). These records are retained rather than silently deduplicated. Consequently, the diagnostic `raw_row_coverage_ratio` can exceed 1, while duplicate records do not inflate the operational `coverage_ratio`, its backward-compatible `unique_coverage_ratio` alias, or the completeness flags.
 - There are 649 retained zero Noise readings.
 - The number of sensors with valid observations varies by period: monthly activity ranges from 1 to 11 usable sensors. Sensor start/end dates and outages are unequal.
 
