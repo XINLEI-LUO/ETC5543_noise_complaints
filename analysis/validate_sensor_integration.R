@@ -1,5 +1,8 @@
 options(stringsAsFactors = FALSE, scipen = 999)
 
+project_library <- normalizePath(".r-library", winslash = "/", mustWork = FALSE)
+if (dir.exists(project_library)) .libPaths(c(project_library, .libPaths()))
+
 # Run from the project root after the preparation and integration scripts.
 processed_dir <- file.path("data", "processed")
 required_outputs <- c(
@@ -94,3 +97,57 @@ message("Validation passed: 11 sensors, 33 sensor-buffer rows, unique keys, stab
 message(sprintf("Duplicate sensitivity passed: maximum median-outcome difference %.1f dataset units; main outcomes retained.",
                 max_sensitivity_difference))
 if (!length(monotonic_exceptions)) message("Urban feature counts/seats are non-decreasing with buffer size.")
+
+# Optional CLUE business extension. Existing validation remains unchanged when
+# the independently generated CLUE outputs are absent.
+clue_feature_path <- file.path(processed_dir, "clue_business_features_by_buffer.csv")
+clue_integrated_path <- file.path(processed_dir, "integrated_sensor_all_buffers_with_clue_2024.csv")
+clue_qa_path <- file.path(processed_dir, "clue_business_integration_qa.csv")
+clue_sensitivity_path <- file.path(processed_dir, "clue_business_duplicate_sensitivity.csv")
+clue_paths <- c(clue_feature_path, clue_integrated_path, clue_qa_path, clue_sensitivity_path)
+
+if (any(file.exists(clue_paths)) && !all(file.exists(clue_paths))) {
+  stop("Only some CLUE business outputs exist; rerun analysis/prepare_clue_business_features.R.")
+}
+if (all(file.exists(clue_paths))) {
+  clue <- read.csv(clue_feature_path, na.strings = c("", "NA"), check.names = FALSE)
+  clue_integrated <- read.csv(clue_integrated_path, na.strings = c("", "NA"), check.names = FALSE)
+  clue_qa <- read.csv(clue_qa_path, na.strings = c("", "NA"), check.names = FALSE)
+  clue_sensitivity <- read.csv(clue_sensitivity_path, na.strings = c("", "NA"), check.names = FALSE)
+
+  fail(nrow(clue) == 33L && !anyDuplicated(clue[c("device_id", "buffer_m")]),
+       "CLUE feature output must contain 33 unique device_id + buffer_m rows.")
+  fail(setequal(unique(clue$buffer_m), c(250, 500, 1000)) && all(table(clue$buffer_m) == 11L),
+       "CLUE feature output must contain 11 sensors at each expected distance.")
+  fail(nrow(clue_integrated) == nrow(all_buffers) &&
+         !anyDuplicated(clue_integrated[c("device_id", "buffer_m")]),
+       "CLUE integration changed the validated sensor-buffer structure.")
+  fail(setequal(paste(clue_integrated$device_id, clue_integrated$buffer_m),
+                paste(all_buffers$device_id, all_buffers$buffer_m)),
+       "CLUE integration does not preserve all existing sensor-buffer keys.")
+  fail(all(clue$feature_data_year == 2024L), "CLUE features must use only Census year 2024.")
+  fail(all(clue$business_mix_entropy_normalised >= 0 & clue$business_mix_entropy_normalised <= 1),
+       "Normalised business-mix entropy is outside [0, 1].")
+  fail(all(clue$business_density_per_km2 >= 0), "Business density cannot be negative.")
+  clue_count_fields <- c(
+    "total_records", "total_active_businesses", "vacant_spaces", "cafes_restaurants",
+    "takeaway_food", "pubs_bars_clue", "other_food_beverage", "retail_businesses",
+    "accommodation_businesses", "entertainment_recreation_businesses",
+    "professional_scientific_technical_businesses", "financial_insurance_businesses",
+    "rental_real_estate_businesses", "administrative_support_businesses"
+  )
+  fail(all(vapply(clue[clue_count_fields], is_nonnegative_integer_or_na, logical(1))),
+       "CLUE count fields must be non-negative integers.")
+  for (field in clue_count_fields) for (id in unique(clue$device_id)) {
+    values <- clue[clue$device_id == id, c("buffer_m", field)]
+    values <- values[order(values$buffer_m), field]
+    fail(!any(diff(values) < 0), paste0("CLUE count is not non-decreasing: ", id, " / ", field))
+  }
+  fail(nrow(clue_sensitivity) == 33L, "CLUE duplicate sensitivity must contain 33 rows.")
+  fail(all(clue_sensitivity$active_business_absolute_difference >= 0 &
+             clue_sensitivity$entropy_absolute_difference >= 0),
+       "CLUE duplicate-sensitivity differences must be non-negative.")
+  fail(nrow(clue_qa) == 18L && all(clue_qa$status == "PASS"),
+       "CLUE QA table contains a failed or missing check.")
+  message("CLUE validation passed: 2024-only features, 33 unique keys, monotonic counts, valid entropy and preserved integration rows.")
+}
