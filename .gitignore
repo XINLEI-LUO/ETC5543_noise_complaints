@@ -4,3 +4,17 @@
 .Ruserdata
 .DS_Store
 Thumbs.db
+
+# Local R and renv state
+.r-library/
+renv/library/
+
+# Large reproducibility snapshot distributed through GitHub Releases
+data/raw/microclimate_sensors.csv
+renv/local/
+renv/cellar/
+renv/lock/
+renv/python/
+renv/sandbox/
+renv/staging/
+renv/runtime/
