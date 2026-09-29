@@ -1,3 +1,8 @@
+---
+output:
+  pdf_document: default
+  html_document: default
+---
 # Noise Sensor Exploratory Data Analysis
 
 > **Purpose:** Provide a clear preliminary assessment of the Melbourne microclimate noise-sensor data, identify the most reliable descriptive patterns, and document important data-quality and coverage limitations before deeper modelling.
@@ -15,9 +20,9 @@ The dataset contains **975,550 observations** from **12 devices** between **31 M
 - **Sensor-level differences are substantial.** Median noise ranges from **52.3** at `ICTMicroclimate-01` to **81.1** at `ICTMicroclimate-10`.
 - **The apparent early time-series jump should not be interpreted as a real city-wide trend.** It was strongly affected by a **158-day data gap** and changing sensor composition.
 - **Missing noise is concentrated in a small number of devices.** `aws5-0999` has **100% missing noise**, while `ICTMicroclimate-01` has **10.52% missing**.
-- The monitoring network is **sparse and centrally located**, so the current data do **not** support city-wide hotspot claims.
+- The monitoring network is **sparse and centrally located**, so the current data do **not** support city-wide spatial claims.
 
-> **Important:** The official data source does not document the unit or interpretation of `Noise`. All numerical results below therefore use **dataset units**.
+> **Important:** The physical unit, sensor model, calibration, mounting height, noise-specific quality flags, and meaning of zero values could not be authoritatively confirmed. We therefore report recorded Noise values in dataset units.
 
 ---
 
@@ -77,7 +82,7 @@ The clearest temporal pattern is variation across the day.
 
 The equal-sensor sensitivity analysis gives the same overall conclusion: the sensor-standardised median is lowest at **03:00 (58.9)** and highest at **15:00–16:00 (70.5)**.
 
-**Interpretation:** noise measurements are generally lower overnight and higher during the daytime and afternoon. This is a descriptive pattern only; the current analysis does not establish a causal explanation.
+**Interpretation:** recorded Noise values are generally lower overnight and higher during the daytime and afternoon at the monitored locations. This is a descriptive pattern only; the current analysis does not establish a causal explanation.
 
 **Relevant output:** Figure 2 and the hourly summary.
 
@@ -97,7 +102,7 @@ The pooled weekday median is **68.1**, compared with **67.6** on weekends.
 
 The equal-sensor analysis also preserves the overall ordering, with Friday highest and Sunday lowest, although the standardised Friday–Sunday difference is slightly larger.
 
-**Interpretation:** there is no strong evidence from this descriptive analysis that Monday-to-Sunday noise levels differ dramatically.
+**Interpretation:** there is no strong evidence from this descriptive analysis that Monday-to-Sunday recorded Noise values differ dramatically.
 
 **Relevant output:** Figure 3 and the weekday / weekday-weekend summaries.
 
@@ -112,7 +117,7 @@ Median noise differs substantially across monitored sensors.
 
 This difference is much larger than the pooled day-of-week difference.
 
-**Interpretation:** some monitored sites record consistently higher or lower values, but these should **not** automatically be interpreted as Melbourne-wide “hotspots”. Sensor calibration, siting, coverage dates, missingness, and local context may contribute to the differences.
+**Interpretation:** some monitored sites record consistently higher or lower values, but the sparse monitoring network does not support a Melbourne-wide spatial interpretation. Sensor calibration, siting, coverage dates, missingness, and local context may contribute to the differences.
 
 **Relevant output:** Figure 4 and the sensor coverage table.
 
@@ -135,9 +140,9 @@ A balanced sensitivity analysis using `ICTMicroclimate-01`, `ICTMicroclimate-02`
 - correlation with the original pooled weekly series: **0.82**;
 - median absolute difference: **1.4 dataset units**.
 
-**Interpretation:** some broad temporal movements remain after equal weighting, but individual levels and peaks depend on which sensors are active. The pooled series should therefore be treated as a **descriptive monitored-network series**, not as a city-wide noise trend.
+**Interpretation:** some broad temporal movements remain after equal weighting, but individual values and peaks depend on which sensors are active. The pooled series should therefore be treated as a **descriptive monitored-network series**, not as a city-wide trend.
 
-**Relevant output:** Figures 1 and 6.
+**Relevant output:** Figures 1 and 7.
 
 ---
 
@@ -161,11 +166,7 @@ All 12 devices have coordinates, although `aws5-0999` has no usable noise values
 
 The sensors cover only a **small set of central Melbourne monitored sites**. Two devices, `ICTMicroclimate-10` and `ICTMicroclimate-11`, share the generic location label **“1 Treasury Place”** but have slightly different coordinates.
 
-Therefore:
-
-> Figure 5 should be interpreted as a **sensor-location map**, not as a Melbourne-wide noise surface.
-
-The current spatial coverage is insufficient for strong claims about where Melbourne's overall noise hotspots are located.
+The current spatial coverage is insufficient for claims about the spatial distribution of recorded Noise values across Melbourne as a whole.
 
 ---
 
@@ -205,17 +206,17 @@ This means the intended frequency appears to be approximately 15 minutes, but ou
 
 | Device | First | Last | Observations | Valid noise | Missing noise | Median |
 |---|---|---|---:|---:|---:|---:|
-| ICTMicroclimate-01 | 2022-05-31 | 2026-07-01 | 138,143 | 123,609 | 10.52% | 52.3 |
-| ICTMicroclimate-02 | 2022-11-08 | 2026-08-17 | 103,113 | 102,470 | 0.62% | 70.0 |
-| ICTMicroclimate-03 | 2022-12-21 | 2026-08-17 | 118,786 | 118,679 | 0.09% | 70.2 |
-| ICTMicroclimate-04 | 2023-08-04 | 2025-07-29 | 52,573 | 52,565 | 0.02% | 67.0 |
-| ICTMicroclimate-05 | 2023-08-04 | 2026-08-17 | 81,424 | 81,371 | 0.07% | 69.7 |
-| ICTMicroclimate-06 | 2023-12-11 | 2026-08-17 | 81,910 | 81,889 | 0.03% | 63.0 |
-| ICTMicroclimate-07 | 2023-12-11 | 2026-08-17 | 82,145 | 82,115 | 0.04% | 63.6 |
-| ICTMicroclimate-08 | 2023-12-11 | 2026-08-17 | 81,479 | 81,455 | 0.03% | 69.9 |
-| ICTMicroclimate-09 | 2023-12-11 | 2026-08-09 | 67,182 | 67,156 | 0.04% | 60.6 |
-| ICTMicroclimate-10 | 2024-08-13 | 2026-08-17 | 51,032 | 50,886 | 0.29% | 81.1 |
-| ICTMicroclimate-11 | 2024-08-13 | 2026-08-17 | 51,916 | 51,764 | 0.29% | 53.4 |
+| ICT-01 | 2022-05-31 | 2026-07-01 | 138,143 | 123,609 | 10.52% | 52.3 |
+| ICT-02 | 2022-11-08 | 2026-08-17 | 103,113 | 102,470 | 0.62% | 70.0 |
+| ICT-03 | 2022-12-21 | 2026-08-17 | 118,786 | 118,679 | 0.09% | 70.2 |
+| ICT-04 | 2023-08-04 | 2025-07-29 | 52,573 | 52,565 | 0.02% | 67.0 |
+| ICT-05 | 2023-08-04 | 2026-08-17 | 81,424 | 81,371 | 0.07% | 69.7 |
+| ICT-06 | 2023-12-11 | 2026-08-17 | 81,910 | 81,889 | 0.03% | 63.0 |
+| ICT-07 | 2023-12-11 | 2026-08-17 | 82,145 | 82,115 | 0.04% | 63.6 |
+| ICT-08 | 2023-12-11 | 2026-08-17 | 81,479 | 81,455 | 0.03% | 69.9 |
+| ICT-09 | 2023-12-11 | 2026-08-09 | 67,182 | 67,156 | 0.04% | 60.6 |
+| ICT-10 | 2024-08-13 | 2026-08-17 | 51,032 | 50,886 | 0.29% | 81.1 |
+| ICT-11 | 2024-08-13 | 2026-08-17 | 51,916 | 51,764 | 0.29% | 53.4 |
 | aws5-0999 | 2022-12-15 | 2026-08-17 | 65,847 | 0 | 100.00% | NA |
 
 Hourly and weekday summaries are well supported by large sample sizes. Longer month, season, and year comparisons require greater caution because sensors enter and leave the network at different times. **2026 is also only a partial year.**
@@ -260,25 +261,34 @@ This supports the existence of some shared temporal patterning while confirming 
 
 ---
 
-# 8. What can the current dataset answer?
+# 8. Seasonal pattern
 
-| Research question | Status | Key limitation |
-|---|---|---|
-| How does measured noise vary by time of day? | **Answerable now** | Unequal sensor coverage |
-| How does measured noise vary by day of week? | **Answerable now** | Unadjusted for holidays/network changes |
-| How does measured noise vary over longer periods? | **Partially answerable** | Sensors enter/leave; 2026 incomplete |
-| Which monitored sensors record relatively high noise? | **Answerable now** | Not a clean location-only comparison |
-| Where are Melbourne's noise hotspots? | **Not currently answerable** | Spatial network is too sparse |
-| Are nightlife-heavy areas noisier? | **Not currently answerable** | No nightlife/activity variables |
-| Are quieter areas well served by restaurants/entertainment? | **Not currently answerable** | Requires amenity/accessibility data |
-| Are noise levels related to complaints? | **Not currently answerable** | No complaint dataset is currently linked |
+Australian meteorological seasons are defined as Summer (December-February), Autumn (March-May), Winter (June-August) and Spring (September-November). December is assigned to the following `season_year`. The main comparison uses complete season-years 2023-2025; 2026 is partial and excluded from the four-season comparison.
+
+To avoid allowing sensors with more raw records to dominate, the seasonal evidence is aggregated from raw readings to sensor-date medians and then sensor-season-year medians. The all-available medians are **66.80 (Summer), 67.40 (Autumn), 69.43 (Winter), and 68.72 (Spring)** dataset units. This gives an all-available order of **Winter > Spring > Autumn > Summer**, with a 2.63-unit highest-to-lowest difference.
+
+The pre-specified balanced rule requires at least 75% active-day coverage in every pooled season. Only `ICTMicroclimate-01` and `ICTMicroclimate-03` qualify. Their medians are **53.41, 61.93, 61.43, and 61.35** for Summer through Spring, giving **Autumn > Winter > Spring > Summer**. At the 50% sensitivity threshold, `ICTMicroclimate-02` also qualifies and the order returns to **Winter > Spring > Autumn > Summer**.
+
+Summer is lowest in all three summaries, but the highest season and absolute levels are sensitive to sensor composition and the coverage rule. Excluding zero readings does not change the all-available seasonal medians or ranking. These patterns describe the monitored locations and do not establish a causal or city-wide seasonal effect. Full methods, coverage diagnostics and figures are in `analysis/seasonal_noise_analysis.md`.
 
 ---
 
-# 9. Important limitations
+# 9. What can the current dataset answer?
 
-1. The **unit and interpretation of `Noise` are not documented** in the supplied dataset.
-2. Sensor calibration and noise-specific quality flags are unavailable.
+| Research question | Status | Key limitation |
+|---|---|---|
+| How do recorded Noise values vary by time of day? | **Answerable now** | Unequal sensor coverage |
+| How do recorded Noise values vary by day of week? | **Answerable now** | Unadjusted for holidays/network changes |
+| How do recorded Noise values vary by season? | **Partially answerable** | Only two sensors meet the primary balanced rule; 2026 incomplete |
+| Which monitored sensors record relatively high values? | **Answerable now** | Not a clean location-only comparison |
+| How do nearby urban-activity characteristics relate to recorded values? | **Requires integrated analysis** | Small number of monitored locations and exploratory associations |
+
+---
+
+# 10. Important limitations
+
+1. The physical unit, sensor model, calibration, mounting height, noise-specific quality flags, and meaning of zero values could not be authoritatively confirmed.
+2. Recorded values are therefore reported in dataset units and cannot be interpreted as physical sound levels.
 3. Sensors have **unequal observation periods** and enter/leave the network at different times.
 4. The spatial network is sparse and cannot represent all of Melbourne.
 5. Zero and extreme values have been flagged but not removed because their meaning is unknown.
@@ -286,21 +296,19 @@ This supports the existence of some shared temporal patterning while confirming 
 
 ---
 
-# 10. Recommended next steps
+# 11. Recommended next steps
 
 1. Obtain authoritative metadata for the `Noise` unit, sensor model, calibration, quality flags, and zero/missing-value conventions.
-2. Investigate outages and the **649 zero readings** before defining exclusion rules.
+2. Review outages and retain the completed zero-value sensitivity results alongside the primary estimates.
 3. Keep balanced and equal-sensor summaries alongside pooled results in future reporting.
-4. Agree on the descriptive research questions before adding external datasets.
-5. If the project expands to nightlife, amenities, complaints, or Melbourne-wide hotspot analysis, acquire the corresponding external spatial datasets.
+4. Keep spatial interpretations limited to the monitored locations.
+5. Use the existing urban-activity integrations only for exploratory association analyses with explicit temporal and spatial limitations.
 
 ---
 
 ## Technical note on the `Noise` field
 
-The supplied file does not document the meaning or unit of `Noise`. The City of Melbourne's current official schema labels `Noise` as a decimal field without a unit or description, and the older microclimate data dictionary contains no noise entry.
-
-For this reason, the report deliberately uses the term **dataset units** rather than assuming that the values are decibels.
+The physical unit, sensor model, calibration, mounting height, noise-specific quality flags, and meaning of zero values could not be authoritatively confirmed. We therefore report recorded Noise values in dataset units.
 
 ---
 
