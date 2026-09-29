@@ -43,12 +43,12 @@ The 96-per-day rule also does not adjust to 92 or 100 readings on daylight-savin
 
 ## Data-quality limitations
 
-- The Noise unit and physical interpretation remain unknown; do not label the values as dB or decibels.
+- The physical unit, sensor model, calibration, mounting height, noise-specific quality flags, and meaning of zero values could not be authoritatively confirmed. We therefore report recorded Noise values in dataset units.
 - Zero readings are retained because their meaning is unresolved.
 - Extreme values are retained; both mean and median are provided for later robustness checks.
 - Sensors have unequal start and end dates, and gaps/outages produce incomplete hours and days.
 - Duplicate raw device/timestamp records have been flagged but not silently changed.
-- Spatial coverage represents monitored sensor locations, not all of Melbourne; these files do not support city-wide hotspot claims or interpolation.
+- Spatial coverage represents monitored sensor locations, not all of Melbourne; these files do not support city-wide spatial claims or interpolation.
 
 ## Recommendation for Chen
 

@@ -12,7 +12,7 @@ The workflow is complete for the available 2024 CLUE bar/pub and cafe/restaurant
 - Daytime: 06:00 to before 18:00. Night-time: 18:00 to before 06:00.
 - Weekday: Monday-Friday. Weekend: Saturday-Sunday.
 - Coverage ratio: valid noise observations divided by the number of expected 15-minute slots from the sensor's first through last observation, inclusive. This is a visibility measure and does not eliminate outages, duplicate timestamps or daylight-saving limitations.
-- Noise unit: dataset units; no authoritative metadata in the repository confirm decibels.
+- The physical unit, sensor model, calibration, mounting height, noise-specific quality flags, and meaning of zero values could not be authoritatively confirmed. We therefore report recorded Noise values in dataset units.
 - Zero Noise readings are retained and counted separately.
 - Spatial CRS: inputs are verified as plausible WGS84 longitude/latitude before conversion. All buffers and spatial joins use GDA2020 / MGA Zone 55 (EPSG:7855), whose metre-based coordinates are appropriate for Melbourne distance operations.
 - Buffers: 250 m and 1,000 m are sensitivity distances; 500 m is the primary distance.
