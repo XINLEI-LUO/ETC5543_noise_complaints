@@ -119,6 +119,9 @@ These files are script outputs and should be regenerated rather than manually ed
 | `clue_business_duplicate_sensitivity.csv` | `analysis/prepare_clue_business_features.R` |
 | `clue_business_integration_qa.csv` | `analysis/prepare_clue_business_features.R` |
 | `integrated_sensor_all_buffers_with_clue_2024.csv` | `analysis/prepare_clue_business_features.R` |
+| `pedestrian_sensor_activity_2024.csv` | `analysis/pedestrian_activity_integration_multiyear.py` |
+| `pedestrian_activity_by_noise_buffer_2024.csv` | `analysis/pedestrian_activity_integration_multiyear.py` |
+| `integrated_sensor_all_buffers_with_pedestrian_2024.csv` | `analysis/pedestrian_activity_integration_multiyear.py` |
 | `pedestrian_sensor_activity_2025.csv` | `analysis/pedestrian_activity_integration_multiyear.py` |
 | `pedestrian_activity_by_noise_buffer_2025.csv` | `analysis/pedestrian_activity_integration_multiyear.py` |
 | `noise_pedestrian_time_aligned_2025.csv` | `analysis/pedestrian_activity_integration_multiyear.py` |
