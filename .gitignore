@@ -18,3 +18,9 @@ renv/python/
 renv/sandbox/
 renv/staging/
 renv/runtime/
+
+# Local Python virtual environment and cache files
+.venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
