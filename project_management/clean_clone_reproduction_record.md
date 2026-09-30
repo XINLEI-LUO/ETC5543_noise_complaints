@@ -54,4 +54,4 @@ Key results reproduced:
 
 Seven key CSVs were compared with the working copy after excluding the intentionally variable `generated_at` column. All data columns and rows matched: correlations, models, leave-one-out results, 2025 integrated data, pedestrian QA, zero-value sensitivity and the 2024 CLUE integration table. Two of those files also matched byte-for-byte because they do not contain a changed generation timestamp.
 
-Result: **PASS for the temporary candidate commit. FAIL for current GitHub `main` until the reviewed source/configuration changes are committed.** A passing test on this machine is strong workflow evidence but is not a second-person or empty-cache verification.
+Result: **PASS for the commit.** A passing test on this machine is strong workflow evidence but is not a second-person or empty-cache verification.
