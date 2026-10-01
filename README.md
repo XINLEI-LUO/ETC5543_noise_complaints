@@ -17,7 +17,8 @@ Supporting questions are:
 - How do recorded Noise values vary by time of day, day of week and season at the monitored locations?
 - Which monitored locations have the highest and lowest recorded Noise values, and how do those patterns vary over time?
 - Are areas with heavy nightlife always associated with higher recorded Noise values, or are there monitored areas with lower recorded values that still have good access to restaurants and entertainment?
--	Are there monitored locations with relatively high or low recorded Noise values given their surrounding urban characteristics?
+
+An originally proposed fourth question asked whether any monitored locations had relatively high or low recorded Noise values given their surrounding urban characteristics. This question is deferred as future work rather than treated as a completed result. With only 11 usable locations, a multivariable contextual benchmark would be highly sensitive to predictor choice and individual sites. A future version would require a pre-specified outcome, no more than one or two well-justified contextual variables, an all-site deviation table and leave-one-sensor-out sensitivity analysis. The current pedestrian association analysis does not answer this deferred question.
 
 ## Scope
 
@@ -48,7 +49,7 @@ Supporting questions are:
 - Core direct R dependencies are `dplyr`, `tidyr`, `readr`, `sf` and `ggplot2`.
 - Python 3.12.14 is the verified interpreter for the current pedestrian integration and statistical stages.
 - Direct and transitive Python runtime package versions are pinned in `requirements.txt`.
-- Quarto is not required: the repository contains no `.qmd` or `.Rmd` analysis entry point.
+- Quarto is required only to render the final presentation source at `presentation/final_presentation.qmd`; it is not required to regenerate the analysis outputs.
 - `analysis/convert_reference_boundary.py` remains an optional standard-library-only boundary conversion utility.
 
 On Windows, CRAN binary packages normally include the compiled spatial libraries needed by `sf`. On Linux or macOS, installing `sf` may require GDAL, GEOS, PROJ and udunits2 development libraries; consult the `sf` installation documentation for the operating system in use.
@@ -114,6 +115,7 @@ The complete order is:
 2. 2025 Noise/pedestrian alignment and multiyear pedestrian QA through `analysis/pedestrian_activity_integration_multiyear.py`.
 3. Zero-value sensitivity after the 2025 integrated file exists.
 4. Primary 2025 pedestrian statistics, leave-one-sensor-out checks, figures and report.
+5. Final sensor-level, spatial-context and RQ3 presentation outputs.
 
 The sensitivity script retains `Noise == 0` in the primary estimates and excludes those records only in the parallel sensitivity estimates. It does not alter the raw snapshot or overwrite the primary analysis outputs.
 
@@ -135,6 +137,17 @@ The main pipeline produces:
 - the sensor-buffer integration map and noise EDA figures;
 - 2025-aligned Noise and pedestrian integration, multiyear pedestrian QA and coverage diagnostics;
 - 2025 pedestrian association, influence and leave-one-out tables plus two statistical figures and a report.
+- final sensor-hour, spatial-context and RQ3 tables and figures for the presentation.
+
+## Render the presentation
+
+After the analysis preflight passes and the final contribution table has been confirmed, render the self-contained HTML document from the repository root:
+
+```sh
+quarto render presentation/final_presentation.qmd
+```
+
+The source uses repository-relative figure paths and embeds its resources in `presentation/final_presentation.html`.
 
 See [`data/README.md`](data/README.md) for the complete processed-file inventory.
 
