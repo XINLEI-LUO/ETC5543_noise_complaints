@@ -29,7 +29,7 @@ expected_packages <- c(
   dplyr = "1.2.1",
   tidyr = "1.3.2",
   readr = "2.2.0",
-  sf = "1.1-2",
+  sf = "1.1-3",
   ggplot2 = "4.0.3"
 )
 

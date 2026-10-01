@@ -1,103 +1,122 @@
 # Reproducibility Checklist
 
-## Current reproducibility status
+## Current status
 
-**Overall status: the reviewed candidate sources pass a temporary clean-clone full run, but GitHub `main` cannot yet run the documented workflow because those sources are not committed there.**
+**Overall status: the canonical read-only preflight passes, but final-presentation reproducibility is still incomplete.** The restored `data/raw/microclimate_sensors.csv` matches the recorded SHA-256, all six inputs pass checksum verification, Python 3.12.14 matches all 23 pinned requirements, R 4.5.2 is consistent with `renv.lock`, and existing processed outputs pass the repository validation script. The final Quarto source, render command and HTML do not yet exist.
 
-The repository now has a canonical read-only preflight and an explicit cross-language regeneration entry point in `analysis/run_pipeline.py`. The preflight verifies R, Python, packages, scripts, inputs and checksums. The current working copy passes all of those checks. Remaining limitations are independent clean-clone verification, uncommitted critical assets and the absence of a final HTML source.
+## Audit commands and results through 1 October 2026
+
+| Check | Command or method | Result |
+|---|---|---|
+| Git state | `git status -sb` | `main` at `72b4893`, tracking `origin/main`; pre-existing user changes: modified `meetings/Meeting_Agenda.docx`, untracked `1.docx` |
+| Canonical read-only preflight | Bundled Python 3.12.14 running `analysis/run_pipeline.py --check` with R 4.5.2 on PATH | PASS: Python and 23 pinned packages, five pipeline scripts, six inputs and hashes, R 4.5.2, `renv` and core package versions |
+| R syntax | Parse every `analysis/*.R` with R 4.5.2 | 12 of 12 PASS |
+| Python syntax | Parse every `analysis/*.py` with Python AST | 4 of 4 PASS |
+| Existing-output validation | `Rscript --vanilla analysis/validate_sensor_integration.R` | PASS: 11 sensors, 33 unique sensor-buffer rows, valid coverage/count semantics, duplicate sensitivity maximum 0.1 and CLUE checks |
+| Presentation source search | Search for `.qmd`, `.Rmd`, `_quarto.yml`, HTML and CSS outside dependencies | None found |
+| Quarto availability | `quarto --version` | Not available on PATH in this environment |
+| Spatial dependency refresh | `renv::record(c("s2@1.1.13", "sf@1.1-3"))` | `renv.lock` updated because the prior Windows binary versions were no longer available from current CRAN; current Windows binaries install and validate |
 
 ## Environment
 
-| Check | Status | Evidence / required action |
+| Check | Status | Evidence or action |
 |---|---|---|
 | R version recorded | PASS | `renv.lock` records R 4.5.2 |
-| R dependency lockfile present | PASS | `renv.lock` exists |
-| `renv` activation files present | PASS | `.Rprofile`, `renv/activate.R`, and settings exist |
-| Current working-copy R environment verified | PASS | `analysis/run_pipeline.py --check` reports R 4.5.2, `renv` 1.2.4 and core package versions consistent with `renv.lock` |
-| Independent clean-clone restore demonstrated | PASS for temporary candidate / FAIL for GitHub `main` | Temporary candidate `423b1f61b8b513cebc4daf139004e56f25175f22` completed restore, preflight and full pipeline; GitHub `main` commit `b6a118649b52643c2e11bdb5983647ed67dc7196` lacks the required runner and lockfiles; see `clean_clone_reproduction_record.md` |
-| Python version/dependencies pinned | PASS | `requirements.txt` pins the complete direct/transitive runtime set; the preflight verifies Python 3.12.14 and every exact version |
-| Locale robustness | PASS in canonical runner | On Windows the runner removes inherited Unix-only `C.UTF-8` variables before R starts, preserving non-ASCII project paths; direct R execution fails with an actionable message if the bad locale remains |
-| Random process fixed | PASS | `analysis/pedestrian_noise_statistical_analysis_2025.py` uses `RANDOM_SEED = 5543` and records per-specification seeds for 99,999 permutations |
-| Absolute user paths in project analysis | PASS | No hard-coded user/home path or project `setwd()` was found in inspected analysis scripts; paths are repository-relative or derived from the script location |
+| R dependency lock present | PASS | `renv.lock`, `.Rprofile`, `renv/activate.R` and `renv/settings.json` exist |
+| Python version pinned | PASS | `analysis/run_pipeline.py` requires Python 3.12.14 |
+| Python packages pinned | PASS | `requirements.txt` has exact versions; bundled environment matched all 23 |
+| Random process fixed | PASS | `analysis/pedestrian_noise_statistical_analysis_2025.py` uses seed 5543 and 99,999 permutation draws |
+| Absolute analysis paths | PASS in inspected scripts | Project files use relative paths or script-root derivation |
+| Quarto installed and version recorded | FAIL | Install/identify Quarto before final render and record its version |
 
 ## Inputs and provenance
 
-| Check | Status | Evidence / required action |
+| Check | Status | Evidence or action |
 |---|---|---|
-| Required R-pipeline inputs enumerated | PASS | `analysis/run_all.R` checks four required raw inputs |
-| Complete-pipeline inputs enumerated and verified | PASS | `analysis/run_pipeline.py` checks six R/Python inputs and their SHA-256 values |
-| Raw/reference inventory and SHA-256 values recorded | PASS | `data/README.md` lists bytes, ranges, providers, and checksums |
-| Exact microclimate snapshot recoverable | PASS | GitHub Release URL and SHA-256 are recorded for `data/raw/microclimate_sensors.csv` |
-| Other exact snapshots recoverable | PARTIAL | Most are Git-tracked, but download dates and fixed portal snapshot URLs are unknown |
-| Pedestrian source filename matches actual range | DOCUMENTED EXCEPTION | The historical filename remains for checksum stability; `data/README.md` now identifies it as the current input, records the 2024-08-19 to 2026-08-15 range, and states the year-specific roles |
-| Licence/provenance preserved | PARTIAL | Provider links and current CC BY observation are documented, but licence text/download evidence is not preserved per file |
-| 2026 completeness handled | PASS analytically / document in HTML | Noise 2026 is partial; pedestrian 2026 has only 166 rows/25 sensors and is excluded from comparative analysis |
+| Required inputs enumerated | PASS | `analysis/run_pipeline.py` lists six inputs and expected SHA-256 hashes |
+| Raw Noise snapshot present | PASS | `data/raw/microclimate_sensors.csv` is present at 163,912,284 bytes |
+| Raw Noise snapshot verified | PASS | SHA-256 is `85f784a66356cbc0eba0793d95faec8801627baf03485a3a15fb17c74e03eb01` |
+| Other raw inputs present | PASS | Eight tracked raw CSVs are present; the five non-Noise inputs required by the complete pipeline are included |
+| Snapshot dates known | PARTIAL | Noise snapshot date is recorded; exact download dates for most other sources require team confirmation |
+| Dynamic-source risk documented | PASS | `data/README.md` distinguishes current portal exports from retained snapshots |
+| Licence evidence retained per file | PARTIAL | Providers/links are documented; per-file licence/download evidence is incomplete |
 
 ## Pipeline and output lineage
 
-| Check | Status | Evidence / required action |
+| Check | Status | Evidence or action |
 |---|---|---|
-| Main R sequence documented | PASS | `analysis/run_all.R` runs EDA, season, outcomes, duplicate sensitivity, integration, CLUE features, and validation |
-| Canonical cross-language runner present | PASS | `analysis/run_pipeline.py --run --overwrite` executes the R core, pedestrian integration, zero sensitivity and 2025 pedestrian statistics in dependency order |
-| Zero-value sensitivity included in complete runner | PASS | It runs after the 2025 integrated file has been generated |
-| Pedestrian integration included in complete runner | PASS | The multiyear Python stage runs after the R sensor-buffer core |
-| Pedestrian statistics included in complete runner | PASS | The statistical stage runs last and requires explicit overwrite authorisation |
-| Legacy/current scripts distinguished | PARTIAL | Summaries describe some superseded outputs, but filenames do not consistently mark legacy scripts |
-| Output-to-script inventory complete | PASS for current processed tables | `data/README.md` now maps the current R and pedestrian/statistical processed tables to producing scripts; final HTML lineage remains future work |
-| Safe overwrite controls | PASS for current Python scripts | Current Python scripts require explicit overwrite and check generation metadata; legacy scripts do not provide the same guarantees |
-| Validation checks pass | PASS for sensor integration | `analysis/validate_sensor_integration.R` was run during the audit and reported 11 sensors, 33 rows, monotonic features, maximum duplicate sensitivity of 0.1, and CLUE validation passed |
-| Pedestrian QA checks pass | PASS for current outputs | `data/processed/pedestrian_multiyear_qa.csv` contains 22 PASS checks |
-| Source-code syntax checks | PASS | 12 R scripts parsed and 5 Python scripts compiled after the reproducibility changes |
-| Final presentation build reproducible | FAIL | No presentation source or render command exists |
+| Canonical complete runner | PASS | `analysis/run_pipeline.py` orders R core, multiyear pedestrian integration, zero sensitivity and pedestrian statistics |
+| Full current preflight | PASS | `analysis/run_pipeline.py --check` validates both language environments, scripts, inputs and checksums |
+| Full current regeneration | NOT ATTEMPTED | `--run --overwrite` would replace generated outputs and belongs in a disposable clean clone or an explicitly approved regeneration stage |
+| Existing R integration validation | PASS | Read-only validation passed during this audit |
+| Processed output-to-script mapping | PASS for current tables | `data/README.md` maps processed files to producing scripts |
+| Legacy/current distinction | PARTIAL | README identifies two legacy scripts, but `analysis/variable_dictionary.md` still presents absent legacy outputs without a strong obsolete label |
+| Intermediate files rebuildable | PREVIOUSLY VERIFIED / NOT RERUN IN THIS STAGE | Earlier clean-clone records report success; this stage intentionally stopped after the read-only preflight |
+| Figures code-generated | MOSTLY PASS | Current figures have producing scripts; the final HTML has no build source yet |
+| One-command final render | FAIL | No presentation source or render command exists |
 
-## Data semantics and analytical safeguards
+## Analytical safeguards
 
-| Check | Status | Evidence / required action |
+| Check | Status | Evidence or action |
 |---|---|---|
-| Primary spatial distance fixed | PASS | 500 m is primary; 250 m and 1,000 m are sensitivity specifications |
-| Analysis key fixed | PASS | `device_id + buffer_m` identifies `sensor × buffer` rows |
-| Zero versus missing semantics defined | PASS | Zero contextual count means confirmed absence after successful load; `NA` means missing/invalid/failed linkage |
-| Exact zero Noise handling transparent | PASS | Zeros retained in primary analysis; exclusion sensitivity is separate |
-| Physical Noise unit verified | FAIL / external metadata needed | Report only dataset units |
-| Sensor calibration/siting metadata available | FAIL | Prevent location-only or physical-sound interpretation |
-| Time zone explicit | PASS in analysis | Timestamps are converted to Melbourne local time; final HTML should repeat this |
-| Mixed feature years explicit | PASS in processed metadata and current reports | 2025 pedestrian/noise analysis labels 2024 business capacity as a **lagged 2024 contextual baseline, not a 2025 measurement** |
-| Small-sample robustness present | PASS | Permutation inference, influence diagnostics, buffer sensitivity, and leave-one-sensor-out checks exist |
+| Primary spatial distance | PASS | 500 m primary; 250 and 1000 m sensitivity |
+| Analysis key | PASS | `device_id + buffer_m`; validation confirms 33 unique rows |
+| Zero versus missing rules | PASS | Zero indicates confirmed absence for context features; NA indicates missing/invalid/failed linkage; Noise zeros retained with separate sensitivity |
+| Physical unit verified | FAIL external metadata | Use dataset units only |
+| Calibration/mounting/siting metadata | FAIL external metadata | Prevents physical or purely spatial interpretation of site differences |
+| Time zone | PASS | Australia/Melbourne is documented in analysis |
+| Mixed context years | PASS if wording preserved | 2024 business fields are explicitly lagged contextual baselines for 2025 comparisons |
+| Small-sample robustness | PASS for pedestrian analysis | Permutation, influence, buffer and leave-one-sensor-out outputs exist |
+| Sensor-by-time evidence | PARTIAL | Availability and equal-sensor summaries exist; heatmap and individual profiles are missing |
 
-## Required clean-clone run order
+## Final HTML reproducibility requirements
 
-The following order should be tested on a clean clone before submission. The current repository now supports the same sequence through the canonical runner.
+| Requirement | Current status | Acceptance test |
+|---|---|---|
+| English Quarto source | Missing | `presentation/final_presentation.qmd` exists and contains all main sections |
+| Template/format decision | Missing | Standard HTML document selected after confirming no course template; reveal.js not assumed |
+| Relative paths | To verify | No local drive/user-specific paths in QMD, CSS or generated links |
+| Self-contained output | Missing | HTML opens offline with images/styles embedded or packaged predictably |
+| Deterministic tables/figures | Partial | Every displayed value traces to code-generated CSV/figure; new RQ3 rule is parameterised |
+| Render command | Missing | One documented command renders from a clean session |
+| HTML resource/link audit | Missing | No broken images, anchors or external local assets |
+| Headline-value check | Missing | Hourly, sensor, seasonal and pedestrian values match source CSVs |
+| Contribution confirmation | Missing | Every member confirms final table |
+| Independent rerun | Missing | A second person recovers inputs, restores environments, runs check/build and confirms outputs |
 
-1. Restore tracked raw/reference files and fetch the verified microclimate release asset.
-2. Verify every checksum in `data/README.md`.
-3. Install R 4.5.2 and successfully restore `renv.lock`.
-4. Create a Python 3.12.14 environment and install `requirements.txt`.
-5. Run `python analysis/run_pipeline.py --check`.
-6. Run `python analysis/run_pipeline.py --run --overwrite` only after generated outputs may be replaced. This executes the R core, pedestrian integration, zero sensitivity and pedestrian statistics in order.
-7. Run the new RQ3 descriptive-selection script and new figure scripts when implemented.
-8. Render `presentation/final_presentation.qmd` to HTML.
-9. Run validation, syntax, link/resource, and offline-open checks.
-10. Compare key numerical results and output checksums against the submission record.
+## Required clean-clone sequence before submission
 
-## Submission record template
+1. Clone the exact submission revision.
+2. Recover `data/raw/microclimate_sensors.csv` from the authenticated Release asset when it is not already available.
+3. Verify all six pipeline input checksums; the current working copy passes this check.
+4. Restore R 4.5.2 packages from `renv.lock`.
+5. Create a Python 3.12.14 environment from `requirements.txt`.
+6. Run `python analysis/run_pipeline.py --check`.
+7. Run `python analysis/run_pipeline.py --run --overwrite` only in a disposable clean clone or after generated outputs are approved for replacement.
+8. Run the new sensor-by-time, map and RQ3 generation steps once added to the canonical pipeline.
+9. Render `presentation/final_presentation.qmd` to a self-contained HTML file.
+10. Run numerical, visual, link/resource and offline-open checks.
+11. Record the final commit, environment versions, hashes, render command and independent reviewer.
 
-Complete and retain the following alongside the final HTML:
+## Submission record
 
 | Field | Value |
 |---|---|
 | Git revision | To record |
-| Dirty working tree? | Must be `No` or explicitly justified |
-| Render date/time zone | To record |
+| Dirty working tree | Must be clean or explicitly justified |
+| Render date and time zone | To record; Australia/Sydney |
 | R version | Expected 4.5.2 |
-| `renv` status | To record after successful restore |
-| Python version | To record |
-| Python dependency lock/checksum | `requirements.txt`; SHA-256 `7e3d6215db05c74d9347ce6b23c13e7cc8830995dd12b49dd0703bddaeccd09e` |
-| Microclimate SHA-256 | Expected `85f784a66356cbc0eba0793d95faec8801627baf03485a3a15fb17c74e03eb01` |
-| Main HTML path | To record |
+| `renv` status | To record after clean restore |
+| Python version | Expected 3.12.14 |
+| `requirements.txt` SHA-256 | `7e3d6215db05c74d9347ce6b23c13e7cc8830995dd12b49dd0703bddaeccd09e` |
+| Microclimate SHA-256 | `85f784a66356cbc0eba0793d95faec8801627baf03485a3a15fb17c74e03eb01` |
+| Quarto version | To record |
+| Main HTML path | Expected `presentation/final_presentation.html` |
 | Render command | To record |
 | Offline HTML check | To record |
 | Independent rerun reviewer | To record |
 
 ## Final gate
 
-Do not describe the project as fully reproducible until a second person can start from a clean clone, recover the exact inputs, restore both language environments, run the full cross-language sequence, render the final HTML, and reproduce the key headline values without manual edits to generated files.
+Do not call the final project fully reproducible until a second person can start from the submission revision, recover the exact inputs, restore R and Python environments, regenerate the analyses, render the self-contained HTML and reproduce the headline values without manual edits to generated files.
+
