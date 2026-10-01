@@ -1,0 +1,4 @@
+buffer_m,eligible_sites,noise_median_threshold,hospitality_median_threshold,candidate_sites,candidate_device_ids
+250,11,64.2,47.0,0,
+500,11,64.2,206.0,0,
+1000,11,64.2,765.0,1,ICTMicroclimate-01
