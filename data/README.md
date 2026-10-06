@@ -132,6 +132,12 @@ These files are script outputs and should be regenerated rather than manually ed
 | `pedestrian_noise_correlations_2025.csv` | `analysis/pedestrian_noise_statistical_analysis_2025.py` |
 | `pedestrian_noise_models_2025.csv` | `analysis/pedestrian_noise_statistical_analysis_2025.py` |
 | `pedestrian_noise_leave_one_out_2025.csv` | `analysis/pedestrian_noise_statistical_analysis_2025.py` |
+| `final_sensor_hour_profiles.csv` | `analysis/final_presentation_outputs.py` |
+| `final_sensor_site_summary.csv` | `analysis/final_presentation_outputs.py` |
+| `rq3_hospitality_screen_all_buffers.csv` | `analysis/final_presentation_outputs.py` |
+| `rq3_hospitality_screen_summary.csv` | `analysis/final_presentation_outputs.py` |
+| `rq3_hospitality_association_by_buffer.csv` | `analysis/rq3_hospitality_followup.py` |
+| `rq3_hospitality_association_leave_one_out.csv` | `analysis/rq3_hospitality_followup.py` |
 
 Legacy outputs `bars_clean.csv`, `cafes_clean.csv`, `block_nightlife_features_2024.csv`, `pedestrian_sensors_clean.csv` and `processed/integrated/pilot_sensor_integrated.csv` are referenced by legacy scripts but are not part of the validated main pipeline and are not present in the current working tree.
 

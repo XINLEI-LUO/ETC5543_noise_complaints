@@ -116,6 +116,7 @@ The complete order is:
 3. Zero-value sensitivity after the 2025 integrated file exists.
 4. Primary 2025 pedestrian statistics, leave-one-sensor-out checks, figures and report.
 5. Final sensor-level, spatial-context and RQ3 presentation outputs.
+6. Exploratory continuous RQ3 hospitality association, permutation and leave-one-site-out sensitivity outputs.
 
 The sensitivity script retains `Noise == 0` in the primary estimates and excludes those records only in the parallel sensitivity estimates. It does not alter the raw snapshot or overwrite the primary analysis outputs.
 
@@ -138,6 +139,7 @@ The main pipeline produces:
 - 2025-aligned Noise and pedestrian integration, multiyear pedestrian QA and coverage diagnostics;
 - 2025 pedestrian association, influence and leave-one-out tables plus two statistical figures and a report.
 - final sensor-hour, spatial-context and RQ3 tables and figures for the presentation.
+- exploratory RQ3 hospitality association and leave-one-site-out tables, a buffer-sensitivity figure and a generated summary.
 
 ## Render the presentation
 

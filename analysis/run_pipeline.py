@@ -34,6 +34,7 @@ REQUIRED_SCRIPTS = (
     "analysis/pedestrian_activity_integration_multiyear.py",
     "analysis/pedestrian_noise_statistical_analysis_2025.py",
     "analysis/final_presentation_outputs.py",
+    "analysis/rq3_hospitality_followup.py",
 )
 
 
@@ -133,10 +134,11 @@ def run_pipeline(rscript: str, environment: dict[str, str]) -> None:
         [rscript, "--vanilla", "analysis/noise_zero_value_sensitivity.R"],
         [sys.executable, "analysis/pedestrian_noise_statistical_analysis_2025.py", "--overwrite"],
         [sys.executable, "analysis/final_presentation_outputs.py", "--overwrite"],
+        [sys.executable, "analysis/rq3_hospitality_followup.py", "--overwrite"],
     ]
     for command in stages:
         run_command(command, environment)
-    print("Pipeline completed: R core, 2025 integration and statistics, sensitivity checks, and final presentation outputs.")
+    print("Pipeline completed: R core, 2025 integration and statistics, sensitivity checks, final presentation outputs, and the exploratory RQ3 follow-up.")
 
 
 def main() -> None:
