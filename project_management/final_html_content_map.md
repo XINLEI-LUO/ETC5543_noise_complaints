@@ -62,7 +62,7 @@ The central story is:
 ### Figures not recommended for the main story
 
 - `figures/fig11_bars_by_area_2024.png` to `figures/fig14_cbd_patron_capacity_trend.png`: city-area context is not directly tied to the monitored-site inference.
-- Both copies of the current buffer map: replace with one canonical teacher-requested map rather than embedding both `figures/fig10_sensor_buffer_integration_map.png` and `figures/sensor_buffer_integration_map.png`.
+- `figures/sensor_buffer_integration_map.png`: retain as the canonical generated legacy integration map, but do not use it for the main story because the revised 500 m map provides the required sensor identifiers and pedestrian counters. Its former duplicate, `figures/fig10_sensor_buffer_integration_map.png`, was deleted on 6 October 2026.
 
 ## Required wording controls
 
