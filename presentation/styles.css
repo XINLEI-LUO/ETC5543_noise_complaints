@@ -1,0 +1,209 @@
+:root {
+  --ink: #172033;
+  --muted: #526071;
+  --accent: #0f6175;
+  --accent-dark: #0a4252;
+  --accent-soft: #e7f3f5;
+  --warm: #d97706;
+  --warm-soft: #fff4df;
+  --rule: #d7e1e8;
+  --surface: #f7f9fb;
+}
+
+.reveal {
+  color: var(--ink);
+  font-family: "Aptos", "Segoe UI", Arial, sans-serif;
+  font-size: 34px;
+}
+
+.reveal .slides {
+  text-align: left;
+}
+
+.reveal h1,
+.reveal h2,
+.reveal h3 {
+  color: #102a43;
+  font-family: "Aptos Display", "Segoe UI", Arial, sans-serif;
+  letter-spacing: -0.025em;
+  text-transform: none;
+}
+
+.reveal h1 { font-size: 2.15em; }
+.reveal h2 {
+  border-bottom: 4px solid var(--accent);
+  font-size: 1.55em;
+  margin-bottom: 0.45em;
+  padding-bottom: 0.16em;
+}
+.reveal h3 {
+  color: var(--accent-dark);
+  font-size: 1.04em;
+  margin-bottom: 0.3em;
+}
+
+.reveal p,
+.reveal li { line-height: 1.28; }
+.reveal li { margin-bottom: 0.25em; }
+
+.reveal img {
+  border: 1px solid var(--rule);
+  border-radius: 10px;
+  box-shadow: 0 3px 14px rgb(23 32 51 / 10%);
+  max-height: 560px;
+}
+.reveal figure { margin: 0.35em auto; }
+.reveal figcaption,
+.reveal .figure-caption {
+  color: var(--muted);
+  font-size: 0.48em;
+  margin-top: 0.15em;
+}
+
+.big-question,
+.final-message {
+  background: linear-gradient(135deg, var(--accent-dark), var(--accent));
+  border-radius: 16px;
+  color: white;
+  font-size: 1.18em;
+  font-weight: 650;
+  margin: 0.65em 0;
+  padding: 0.65em 0.8em;
+}
+.final-message {
+  font-size: 1.25em;
+  margin-top: 1.2em;
+  text-align: center;
+}
+.final-message p { margin: 0.35em 0; }
+
+.two-result-grid,
+.role-grid {
+  display: grid;
+  gap: 0.55em;
+  margin: 0.35em 0;
+}
+.two-result-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.role-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.compact-result,
+.role-card {
+  background: var(--surface);
+  border: 1px solid var(--rule);
+  border-radius: 12px;
+  padding: 0.35em 0.5em;
+}
+.compact-result h3 { margin-top: 0; }
+.compact-result p { font-size: 0.72em; margin: 0.16em 0; }
+.compact-result figure { margin: 0.12em auto; }
+.compact-result img {
+  max-height: 410px;
+  width: 100%;
+  object-fit: contain;
+}
+.role-card { text-align: center; }
+.role-card strong { color: var(--accent-dark); font-size: 1.05em; }
+.role-card p { font-size: 0.72em; margin: 0.15em 0; }
+
+.compact-columns {
+  align-items: center;
+  gap: 0.8em;
+}
+.compact-columns figure { margin: 0.12em auto; }
+.slide-map,
+.slide-plot {
+  max-height: 610px !important;
+  width: 100%;
+  object-fit: contain;
+}
+.compact-columns .result-strip {
+  margin-top: 0;
+  padding: 0.5em 0.45em;
+}
+.compact-columns .result-strip p {
+  line-height: 1.45;
+  margin: 0;
+}
+
+.stat-grid {
+  display: grid;
+  gap: 0.45em;
+  grid-template-columns: repeat(4, 1fr);
+  margin-bottom: 0.45em;
+}
+.stat-card {
+  background: var(--surface);
+  border: 2px solid var(--rule);
+  border-radius: 12px;
+  padding: 0.35em 0.45em;
+  text-align: center;
+}
+.stat-card strong {
+  display: block;
+  color: var(--accent);
+  font-size: 1.25em;
+  line-height: 1.05;
+  margin: 0;
+}
+.stat-card p {
+  color: var(--muted);
+  font-size: 0.65em;
+  margin: 0.1em 0 0;
+}
+
+.flow-row,
+.result-strip,
+.takeaway,
+.caution-box {
+  border-radius: 10px;
+  margin: 0.45em 0;
+  padding: 0.35em 0.55em;
+}
+.flow-row,
+.result-strip,
+.takeaway {
+  background: var(--accent-soft);
+  border-left: 8px solid var(--accent);
+}
+.flow-row {
+  font-size: 0.92em;
+  text-align: center;
+}
+.result-strip {
+  font-size: 0.88em;
+  text-align: center;
+}
+.takeaway { font-size: 0.85em; }
+.caution-box {
+  background: var(--warm-soft);
+  border-left: 8px solid var(--warm);
+  font-size: 0.82em;
+}
+
+.reveal table {
+  border-collapse: collapse;
+  font-size: 0.72em;
+  margin: 0.6em auto;
+  width: 92%;
+}
+.reveal th {
+  background: var(--accent);
+  color: white;
+}
+.reveal th,
+.reveal td {
+  border: 1px solid var(--rule);
+  padding: 0.45em 0.55em;
+}
+.reveal .slide-number {
+  background: transparent;
+  color: var(--muted);
+  font-size: 16px;
+}
+.reveal .progress span { background: var(--accent); }
+
+@media (max-width: 900px) {
+  .reveal { font-size: 28px; }
+  .stat-grid { grid-template-columns: repeat(2, 1fr); }
+  .two-result-grid,
+  .role-grid { grid-template-columns: 1fr; }
+}
