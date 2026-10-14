@@ -110,9 +110,19 @@
 }
 .compact-columns figure { margin: 0.12em auto; }
 .slide-map,
-.slide-plot {
+.slide-plot,
+.full-slide-plot {
   max-height: 610px !important;
   width: 100%;
+  object-fit: contain;
+}
+.full-slide-plot { max-height: 590px !important; }
+.sensor-intro { align-items: center; }
+.sensor-photo {
+  display: block;
+  margin: 0 auto;
+  max-height: 590px !important;
+  max-width: 100%;
   object-fit: contain;
 }
 .compact-columns .result-strip {
@@ -206,4 +216,37 @@
   .stat-grid { grid-template-columns: repeat(2, 1fr); }
   .two-result-grid,
   .role-grid { grid-template-columns: 1fr; }
+}
+
+/* RQ3 hospitality figures */
+
+.reveal img.rq3-wide-plot {
+  display: block;
+  width: 95% !important;
+  max-width: 95% !important;
+  height: 55vh !important;
+  max-height: none !important;
+  object-fit: fill !important;
+  margin: 0 auto !important;
+}
+
+/* RQ3 slides: compact bottom text */
+
+.reveal .rq3-bottom-text {
+  font-size: 0.78em !important;
+  line-height: 1.05 !important;
+  margin-top: 0.12em !important;
+  margin-bottom: 0 !important;
+  padding: 0 !important;
+}
+
+.reveal .rq3-bottom-text p {
+  margin: 0 !important;
+  padding: 0 !important;
+  line-height: 1.05 !important;
+}
+
+/* Reduce spacing below the result strip */
+.reveal .rq3-bottom-text + * {
+  margin-top: 0 !important;
 }

@@ -5,7 +5,6 @@ author:
   - "Sandhya Erland Chandrasekar"
   - "Xinlei Luo"
   - "Chen Liu"
-date: last-modified
 format:
   revealjs:
     embed-resources: true
@@ -41,6 +40,29 @@ We use Melbourne's recorded **Noise** values to ask:
 
 ::: {.notes}
 Speaker: Sandhya. Target: 50 seconds. Start with the broad problem of responsible sensor-based decisions, then narrow to the three project questions.
+:::
+
+## What the sensor data represent
+
+::: {.columns .sensor-intro}
+::: {.column width="46%"}
+![Example of fixed monitoring equipment supplied by the project team.](../figures/sensor_2.jpg){.sensor-photo fig-alt="A fixed monitoring device installed on a pole."}
+:::
+
+::: {.column width="50%"}
+- Fixed equipment records values at selected locations.
+- The source provides repeated observations at roughly **15-minute intervals**.
+- The measured field is named **Noise** in the dataset.
+- We compare those repeated values across time and place.
+
+::: {.caution-box}
+The exact model, physical unit and calibration still need authoritative confirmation.
+:::
+:::
+:::
+
+::: {.notes}
+Speaker: Sandhya. Target: 40 seconds. Use the photo only to show what fixed monitoring equipment looks like. Do not claim that the pictured model is confirmed for every record. Emphasise that these are repeated sensor readings, not complaints and not city-wide coverage.
 :::
 
 ## The evidence boundary comes first
@@ -170,8 +192,8 @@ Speaker: Xinlei. Target: 1 minute 10 seconds. Use the heatmap for comparison and
 
 ::: {.column width="35%"}
 ::: {.result-strip}
-**ρ = 0.248**  
-permutation **p = 0.494**  
+**Spearman's rho = 0.248**  
+**Permutation p-value = 0.494**  
 **n = 10** at 500 m
 :::
 
@@ -181,37 +203,45 @@ permutation **p = 0.494**
 - Across buffers: **−0.168 to 0.618**.
 
 **Interpretation:** no stable simple association for this measure and sample.
+
+The shaded area is a **95% confidence band for the fitted average line**. It is not a range for individual sites.
 :::
 :::
 
 ::: {.notes}
-Speaker: Xinlei. Target: 1 minute 10 seconds. Explain that changing buffers change the matched counters. Do not generalise this result to pedestrian activity and sound overall. Hand over to Chen.
+Speaker: Xinlei. Target: 1 minute 25 seconds. Explain that changing buffers changes the matched counters. The confidence band describes uncertainty around the fitted OLS mean, not the Spearman statistic and not individual predictions. Do not generalise this result to pedestrian activity and sound overall. Hand over to Chen.
 :::
 
-## A frozen screen and a separate follow-up
+## The original hospitality screen stayed frozen
 
-::: {.two-result-grid}
-::: {.compact-result}
-### Original screen
+![](../figures/final_rq3_hospitality_screen_500m.png){.rq3-wide-plot fig-alt="Scatter plot with fixed low-noise and high-hospitality median thresholds."}
 
-![](../figures/final_rq3_hospitality_screen_500m.png){fig-alt="Scatter plot with fixed low-noise and high-hospitality median thresholds."}
-
-Below **64.2** and above **206**: **0 candidates** at 500 m.
+::: {.result-strip}
+Below **64.2** and above **206** hospitality venues: **0 candidates at 500 m**.
 :::
 
-::: {.compact-result}
-### Exploratory follow-up
-
-![](../figures/final_rq3_hospitality_association_sensitivity.png){fig-alt="Spearman correlations and leave-one-site-out ranges at three buffer distances."}
-
-500 m: **ρ = 0.727**, **p = 0.014**, **n = 11**.
+::: {.rq3-bottom-text}
+We chose the thresholds first and did not move them after seeing the result.
 :::
-:::
-
-We did not move the thresholds. The continuous follow-up is post-screen, exploratory and non-causal.
 
 ::: {.notes}
-Speaker: Chen. Target: 1 minute 35 seconds. First preserve the zero-candidate screen. Then explain why using all ranks is more informative. State that the 2024 hospitality count is lagged context and that the positive follow-up does not establish causation.
+Speaker: Chen. Target: 55 seconds. Explain that frozen means the pass/fail rule was kept unchanged. The zero-candidate result is the answer to the original screen. The 2024 hospitality count is lagged context, not a matched 2025 exposure measure.
+:::
+
+## The follow-up uses all of the rankings
+
+![](../figures/final_rq3_hospitality_association_sensitivity.png){.rq3-wide-plot fig-alt="Spearman correlations and leave-one-site-out ranges at three buffer distances."}
+
+::: {.result-strip}
+500 m: **Spearman's rho = 0.727** · **Permutation p-value = 0.014** · **n = 11**
+:::
+
+::: {.rq3-bottom-text}
+The bars are leave-one-site-out ranges, **not confidence intervals**. The result is post-screen, exploratory and non-causal.
+:::
+
+::: {.notes}
+Speaker: Chen. Target: 1 minute. Explain why ranks retain more information than pass/fail thresholds. The positive direction is stable across leave-one-site-out checks and buffers, but the 2024 context, overlapping buffers and observational design prevent a causal claim.
 :::
 
 ## Methods matched to a small sample
@@ -226,6 +256,8 @@ Speaker: Chen. Target: 1 minute 35 seconds. First preserve the zero-candidate sc
 - 99,999-draw permutation tests
 - Leave-one-site-out checks
 - Three buffer distances
+
+**Permutation in plain language:** keep the context ranks fixed, shuffle the **Noise ranks across sensor sites**, and compare the shuffled correlations with the observed one.
 :::
 
 ::: {.column width="47%"}
@@ -240,10 +272,10 @@ Speaker: Chen. Target: 1 minute 35 seconds. First preserve the zero-candidate sc
 :::
 
 ::: {.notes}
-Speaker: Chen. Target: 1 minute 15 seconds. The analytical sample is 10 or 11 sites. Explain why a complex multivariable model would be less defensible, not more advanced.
+Speaker: Chen. Target: 1 minute 15 seconds. The analytical sample is 10 or 11 sites. Explain the permutation test in plain language and note that exchangeability may be imperfect because nearby sites and overlapping buffers are not fully independent. Explain why a complex multivariable model would be less defensible, not more advanced.
 :::
 
-## What the project succeeded at and where it stops
+## What we learned—and where the evidence stops
 
 1. A clear daily cycle appears across monitored sensors.
 2. Sites differ in level and hourly shape.
@@ -255,53 +287,21 @@ Speaker: Chen. Target: 1 minute 15 seconds. The analytical sample is 10 or 11 si
 Success means a reproducible and well-bounded answer. It does not mean a city-wide map, a causal model or a physical exposure measure.
 :::
 
-::: {.notes}
-Speaker: Chen. Target: 1 minute 5 seconds. Treat this as a reflection on project success. Pause after the first two findings, then state the evidence boundary.
-:::
-
-## From one sparse network to better decisions
-
-::: {.role-grid}
-::: {.role-card}
-**Sandhya**
-
-Found the data and prepared a defensible sample.
-:::
-::: {.role-card}
-**Xinlei**
-
-Linked the data and turned the links into visuals.
-:::
-::: {.role-card}
-**Chen**
-
-Selected and explained methods for the small sample.
-:::
-:::
-
-**Reproducibility:** retained snapshots, checksums, explicit joins, processed tables and a self-contained HTML presentation.
-
-**Stronger evidence would require:** validated sensor metadata and a wider, more stable monitoring network.
-
 ::: {.final-message}
 Sparse sensor data can guide better questions—if the evidence boundary stays visible.
 :::
 
-**Questions?**
+### Questions?
 
 ::: {.notes}
-Speaker: Chen. Target: 1 minute 5 seconds. Name every contribution, state what stronger evidence would require, and return to the broad decision problem from the opening. Total planned speech is about 12 minutes 30 seconds, leaving time for handoffs and natural pauses under the 15-minute limit.
+Speaker: Chen. Target: 1 minute 10 seconds. Pause after the first two findings. State that longer time scales were checked but did not yield a stable extra headline. Close on the evidence boundary and invite questions. Total planned speech is about 12 minutes 45 seconds, leaving time for handoffs and natural pauses under the 15-minute limit.
 :::
 
 # Backup slides {.unnumbered}
 
 ## Seasonal sensitivity
 
-::: {layout-ncol="2"}
-![Balanced sensor-season-year distributions.](../figures/fig15_seasonal_noise_boxplot.png){fig-alt="Boxplot of balanced sensor-season-year recorded Noise summaries."}
-
-![Seasonal medians and coverage eligibility.](../figures/fig16_sensor_season_heatmap.png){fig-alt="Heatmap of sensor seasonal medians with ineligible cells marked."}
-:::
+![Balanced sensor-season-year distributions.](../figures/fig15_seasonal_noise_boxplot.png){.full-slide-plot fig-alt="Boxplot of balanced sensor-season-year recorded Noise summaries."}
 
 Only sensors 01 and 03 meet the 75% active-day rule in every pooled season. Seasonal ordering is therefore composition-sensitive.
 
