@@ -2,7 +2,9 @@
 
 ## Audit conclusion
 
-The repository already supports a defensible central story: the monitored network shows a clear daily pattern, monitored sites differ substantially, those site differences cannot be separated from sensor and siting differences, and the available pedestrian comparison does not identify a stable simple association. The temporal work is the most mature. The final presentation layer and the teacher-prioritised sensor-by-time evidence are incomplete.
+The repository supports a defensible central story: the monitored network shows a clear daily pattern, monitored sites differ substantially, those site differences cannot be separated from sensor and siting differences, and the available pedestrian comparison does not identify a stable simple association. The frozen RQ3 screen remains visible, while a separately labelled exploratory follow-up uses the continuous site-level information.
+
+As of 6 October 2026, the teacher-prioritised sensor-by-time figures, revised 500 m context map, RQ3 outputs, self-contained reveal.js HTML slide deck, and three-person rehearsal script have been produced. The main remaining release tasks are a timed team rehearsal, an offline-open check on the presentation laptop, headline-number verification after the final pipeline run, and a clean-clone reproduction tied to the submission commit.
 
 This was a read-only analytical audit. No existing code, data, report, README or figure was changed. The only files created or updated are the five internal review records requested in `1.docx`.
 
@@ -68,7 +70,7 @@ No `.qmd`, `.Rmd`, `_quarto.yml`, `.html` or `.css` file exists outside ignored 
 | `project_management/clean_clone_reproduction_record.md` | Earlier clean-clone test | Historically useful | Partly stale | Reproducibility appendix source | It says GitHub `main` lacked files, but current `main`/`origin/main` is `72b4893` and now tracks the runner, lockfiles and expanded docs. |
 | `meetings/Catherine_weekly_report.docx` | Early progress and allocation record | Read during audit | Historical | Contribution evidence only | Contains early claims now superseded; explicitly says allocations require confirmation. |
 | `meetings/Meeting_Agenda.docx` | Meeting history and teacher priorities | Read during audit; locally modified before this audit | Historical/current evidence | Contribution and reflection sources | Preserve the user's uncommitted change; do not treat every agenda statement as completed work. |
-| `data/0_population_growth_summary.csv` and related top-level population/biodiversity CSVs | Early possible project inputs | Tracked but not connected to current pipeline | Out of current scope | Exclude | Noise complaints, population and biodiversity are not part of the current central story. |
+| Earlier top-level population/biodiversity CSVs | Early possible project inputs | Removed from the current tree; original addition remains recoverable from Git commit `95ecafd` | Out of current scope | Excluded | Population and biodiversity are not part of the current central story. |
 
 ## Evidence matrix by research question
 

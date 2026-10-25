@@ -178,3 +178,9 @@ python analysis/run_pipeline.py --check
 ## Contributions
 
 Use the Git history for code and data contributions. Meeting agendas and weekly contribution records are stored in `meetings/`.
+
+## License
+
+Code written by the project team is licensed under the [MIT License](LICENSE).
+
+The MIT License does not apply to third-party data, photographs, software dependencies or other external materials. Those materials remain subject to their original copyright and licence terms. See [`data/README.md`](data/README.md#licensing-and-external-materials) for source-specific licence and attribution information, including items whose licence or permission still requires confirmation.
