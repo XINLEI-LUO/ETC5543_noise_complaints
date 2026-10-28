@@ -27,7 +27,7 @@ Complete these checks before submission and again before presenting.
 - [ ] Target about 13 minutes and finish before 14 minutes to preserve a safety margin.
 - [ ] Practise both handovers: Sandhya to Xinlei and Xinlei to Chen.
 - [ ] Do not read every chart label; point to the one pattern the audience should notice.
-- [ ] Practise the short spoken answers in `Q&A2.md`, especially permutation logic, confidence bands, causality and the small sample.
+- [ ] Practise the speaker-note explanations in `presentation/final_presentation.qmd`, especially permutation logic, confidence bands, causality and the small sample.
 
 ## Reproducibility gate
 

@@ -65,7 +65,7 @@ No `.qmd`, `.Rmd`, `_quarto.yml`, `.html` or `.css` file exists outside ignored 
 | `analysis/duplicate_timestamp_sensitivity.R` | Repeated timestamp sensitivity | Parsed successfully; outputs exist | Current | Technical appendix | Cause of repeated timestamps remains unknown. |
 | `analysis/urban_activity_eda.R` | Early urban activity EDA | Parses but is not in the validated pipeline | Legacy | Do not source final results from it | Requires legacy packages and refers to outputs no longer present. |
 | `analysis/part3_spatial_integration.R` | Early spatial integration scaffold | Parses but is not in the validated pipeline | Legacy | Do not use | Superseded by validated sensor-buffer scripts. |
-| `analysis/variable_dictionary.md` | Dictionary for old cleaned outputs | References absent files such as `bars_clean.csv` | Obsolete | Do not use | Conflicts with current output lineage and should later be archived or rewritten. |
+| `analysis/variable_dictionary.md` | Dictionary for current Noise, spatial, pedestrian and presentation outputs | Rewritten against the files present in `data/processed/` | Current | Supporting documentation | Records shared conventions, current output grain, key fields and interpretation limits. |
 | `figures/fig11_bars_by_area_2024.png` through `figures/fig14_cbd_patron_capacity_trend.png` | Early city-area urban activity context | Images exist | Legacy/supporting | Appendix only if needed for background | Not directly linked to the monitored-site research questions. |
 | `project_management/clean_clone_reproduction_record.md` | Earlier clean-clone test | Historically useful | Partly stale | Reproducibility appendix source | It says GitHub `main` lacked files, but current `main`/`origin/main` is `72b4893` and now tracks the runner, lockfiles and expanded docs. |
 | `meetings/Catherine_weekly_report.docx` | Early progress and allocation record | Read during audit | Historical | Contribution evidence only | Contains early claims now superseded; explicitly says allocations require confirmation. |
@@ -95,7 +95,7 @@ No `.qmd`, `.Rmd`, `_quarto.yml`, `.html` or `.css` file exists outside ignored 
 
 - `figures/sensor_buffer_integration_map.png` must be revised for the teacher's requested layers. It currently shows Noise sensors, venue points and three buffer distances, not pedestrian counters, sensor IDs and an emphasised 500 m design.
 - Duplicate-map cleanup is complete: `figures/fig10_sensor_buffer_integration_map.png` was deleted on 6 October 2026 after its SHA-256 matched `figures/sensor_buffer_integration_map.png`. The later-named file remains the only canonical generated integration map.
-- `analysis/variable_dictionary.md` describes absent legacy outputs and should not be used in the final HTML.
+- `analysis/variable_dictionary.md` now documents the current analysis outputs and can be used as supporting documentation; the final HTML should still define essential variables where they first appear.
 - `project_management/clean_clone_reproduction_record.md` contains a historically correct but now stale claim about what `origin/main` contains. It should be refreshed after input recovery and a new clean-clone test.
 - `README.md` says no Quarto entry point exists; after presentation implementation it should link to the new render source and command.
 - Any future wording such as “no relationship”, “amenities lower Noise”, “confirmed anomaly”, “hotspot across Melbourne”, physical-unit language or health/regulatory interpretations must be excluded.
