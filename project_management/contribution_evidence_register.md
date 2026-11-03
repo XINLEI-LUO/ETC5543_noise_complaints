@@ -1,57 +1,46 @@
 # Contribution Evidence Register
 
-## Interpretation rule
+## Purpose and attribution rules
 
-Git author names show who committed a change, not necessarily who designed, wrote, reviewed or validated it. Meeting records document intended or reported allocations, but they also contain early and superseded statements. No final contribution claim should be published until each member confirms it.
+This register describes the contributions of the three student team members to the final Melbourne Noise project. The team has clarified the name mappings: **Xinlei Luo = Cindy** and **Chen Liu = Catherine**. These are alternative names for the same two people, not additional contributors.
 
-The repository uses several names that cannot be safely equated from files alone: Cindy, Xinlei, Catherine, Chen Liu, Sandhya and Minh Huynh. In particular, the audit does not assume that Cindy and Xinlei are the same person, or that Catherine and Chen are the same person. These mappings require team confirmation.
+**Contribution statements follow the team's confirmed division of work, not Git author identities or commit counts.** A Git author entry establishes who committed or merged a file; it does not, by itself, establish who collected the data, developed the analysis, created the figure, interpreted the results, reviewed the work or wrote the report. Meeting records and project files provide supporting context, but planned tasks should not be presented as independently verified completed work. The descriptions below are team-provided role allocations; precise file-level authorship and any shared work should be confirmed before submission.
 
-## Git-level evidence
+The scope of this register is limited to the three student members and the final Noise analysis. Teaching staff and work outside the final research scope are excluded.
 
-`git shortlog -sne --all` reports:
+## Agreed division of responsibilities
 
-| Git author identity | Commits | What this establishes | What it does not establish |
-|---|---:|---|---|
-| Xinlei `<xluo0036@student.monash.edu>` | 41 | Most current pipeline, documentation, curated outputs and merges were committed under this identity | Whether Xinlei is Cindy; whether merged files were authored by another member; extent of review |
-| Sandhya `<sandhya@CHANDRASEKARs-MacBook-Pro.local>` | 4 | Early urban-activity scripts, dictionaries, cleaned feature outputs and raw dataset additions appear in branch history | Whether all current urban features were solely produced by Sandhya |
-| Chen Liu `<cliu0197@student.monash.edu>` | 3 | `analysis/part3_spatial_integration.R` and uploaded files are associated with this identity | Whether later validated spatial scripts were written or reviewed by Chen |
-| Minh Huynh `<minh.vq.huynh@gmail.com>` | 1 | Top-level population/biodiversity-related data were added | Whether Minh contributed to the current scoped Noise analysis |
+| Student (name used in report) | Other name used in project | Main responsibility | Contribution to the research workflow |
+|---|---|---|---|
+| Sandhya Erland Chandrasekar | Sandhya | Data collection, cleaning and classification | Prepared and organised source datasets and relevant urban-activity categories for subsequent analysis. |
+| Xinlei Luo | Cindy | Data analysis, initial method selection and visualisation | Selected and implemented analysis approaches, produced Noise and contextual comparisons, and generated figures and other analytical outputs. |
+| Chen Liu | Catherine | In-depth examination of results and graphs, interpretation and conclusions | Critically reviewed analytical patterns, considered consistency and limitations, and developed evidence-based interpretations and conclusions. |
 
-## File and meeting evidence
+## Narrative contribution statements
 
-| Person/name in records | Reported responsibility | Specific evidence | Confidence | Required confirmation |
-|---|---|---|---|---|
-| Cindy | Noise EDA, sensor outcomes, coverage, spatial transformation, buffers, integration and validation outputs | `meetings/Catherine_weekly_report.docx` assigns Noise work to Cindy; 4 September agenda assigns Cindy the outcomes, buffers, integration and duplicate checks; files include `analysis/noise_eda.R`, `analysis/prepare_noise_outcomes.R`, `analysis/build_sensor_integration.R`, `analysis/validate_sensor_integration.R` and related outputs | Medium | Confirm which exact files Cindy authored, reviewed or validated and whether Cindy maps to a Git identity |
-| Sandhya | Urban activity/nightlife features, bars/pubs, capacity, seating and pedestrian feasibility | Weekly report and 4 September agenda; Git commits `410ab0c`, `75e999b`, `13c665d`, `7965e01`; current related sources include `analysis/urban_activity_eda.R`, `analysis/urban_activity_summary.md`, raw CLUE/pedestrian files | High for early work; medium for current integrated outputs | Confirm contribution to current multiyear pedestrian integration and current CLUE feature specification |
-| Chen | Spatial integration, manual sensor checks, map validation and methods documentation | 4 September agenda reports manual validation and a methods note; Git author Chen Liu committed `analysis/part3_spatial_integration.R` | Medium | Confirm whether Chen completed the manual checks/method note and reviewed the later validated map/pipeline |
-| Xinlei | Repository integration, current reproducibility pipeline and many current commits | Git history associates Xinlei with current R/Python pipeline, curated outputs, CLUE extension, README and reproducibility records | High for commit/integration activity | Confirm personal identity and distinguish original authorship from branch merges and maintenance |
-| Catherine | Named in `meetings/Catherine_weekly_report.docx`; 21 August agenda assigns population/built-environment/data integration to Catherine | Document naming and agenda text | Low | Confirm whether Catherine is a team member, whether this maps to Chen or another person, and whether planned work was completed |
-| Minh Huynh | Added population/biodiversity-related datasets | Git commit `95ecafd` | High for the commit; low for current-scope contribution | Confirm whether this work should appear in the final contribution table after population/biodiversity left the scope |
+### Sandhya Erland Chandrasekar — Data collection, cleaning and classification
 
-## Proposed final contribution table pending confirmation
+Sandhya was primarily responsible for collecting, cleaning and classifying data used in the project. This work involved obtaining and organising relevant City of Melbourne urban-activity sources, including CLUE hospitality and business information and pedestrian counting data. Sandhya examined dataset structures, prepared variables and categories relevant to the research questions, and addressed data-format and quality issues as part of preparing inputs for integration. The hospitality-related preparation included distinguishing venue types and assembling features that could be compared with monitored Noise locations. These tasks provided a clearer, more consistent data foundation for subsequent analysis. Related urban-activity exploration files, data dictionaries and feature outputs may be retained as supporting artefacts, but their presence in Git does not prove sole authorship of all later integrated variables.
 
-| Member | Main responsibility | Specific files or analyses | Final presentation contribution | Validation or review contribution | Status |
-|---|---|---|---|---|---|
-| Cindy | Noise temporal and sensor-level analysis | Confirm exact ownership of `analysis/noise_eda.R`, `analysis/prepare_noise_outcomes.R`, sensor coverage, hourly/weekday/seasonal outputs and new sensor-by-time figures | Temporal and sensor-by-time sections | Confirm checks of coverage, zero and duplicate sensitivity | Requires team confirmation |
-| Sandhya | Urban activity and amenity context | Early urban activity scripts/data; confirm ownership of current CLUE and pedestrian feature definitions | Data sources and descriptive location profiles | Confirm feature QA and interpretation review | Requires team confirmation |
-| Chen | Spatial integration and validation | `analysis/part3_spatial_integration.R`; confirm later map/method review | Spatial design and revised 500 m map | Confirm manual selected-sensor checks and map validation | Requires team confirmation |
-| Other confirmed member(s) | To be specified | Population/built environment or repository integration only if relevant to final scope | To be specified | To be specified | Requires identity and scope confirmation |
+### Xinlei Luo (Cindy) — Data analysis, initial method selection and visualisation
 
-## Confirmation questions for the team
+Xinlei was primarily responsible for analysing the prepared data, making the initial selection of suitable methods and creating visualisations. The analytical work covered time-of-day and seasonal Noise patterns, differences across monitoring sites, data coverage, and exploratory comparisons with nearby urban activities. Methods considered and applied in the project included median-based summaries, pooled and equal-sensor comparisons, spatial buffer integration and sensitivity checks. Xinlei also worked on sensor-level Noise outcomes, spatial data transformation and integration, analytical validation, and production of graphs and curated results. This work connected the prepared sources with the project's research questions and made results easier to inspect and reproduce. Repository commits under Xinlei's identity are supporting evidence of repository integration and maintenance, not automatic evidence that Xinlei originally authored every committed or merged file.
 
-1. Is Xinlei the same person as Cindy? If yes, use one consistent final name.
-2. Is Catherine the same person as Chen, a different member, or an outdated agenda label?
-3. Which member authored versus merged each of the current pipeline scripts?
-4. Did Chen complete the stated manual checks and methods note, and where are those records?
-5. Did Sandhya contribute to the current 2025 pedestrian integration/statistics or only the earlier data preparation?
-6. Should Minh's out-of-scope population/biodiversity data contribution appear in the final table?
-7. Who will own the new sensor-by-time figures, revised map, RQ3 profile, HTML assembly and independent QA?
+### Chen Liu (Catherine) — In-depth result review, interpretation and conclusions
 
-## Evidence to retain for submission
+Chen was primarily responsible for examining the analytical findings and graphics in greater depth, interpreting their meaning and drawing the project's conclusions. This included reviewing daily and seasonal patterns, differences between monitored locations, and the results of pedestrian and hospitality comparisons. Chen assessed whether reported relationships were consistent across analyses and what the small network, incomplete coverage, overlapping buffers and other limitations meant for the strength of the conclusions. The interpretation work emphasised separating observed associations from causal claims and explaining what the results could and could not support. Project meeting records also associate Chen with spatial checks, map validation and methods discussion, but these records do not independently confirm the completion or sole authorship of every related file. The primary contribution described here is critical interpretation and synthesis of the results into cautious, evidence-based conclusions.
 
-- A reviewed final contribution table signed off in team communication.
-- Git revision used for the HTML.
-- Exact files/analyses listed per member.
-- Separate entries for presentation writing and for validation/review, not just code commits.
-- A note where work was collaborative or merged from a branch.
+## Supporting records and their limits
 
+| Evidence source | What it can support | What it cannot establish alone |
+|---|---|---|
+| Team-confirmed role allocation used for this revision | The agreed main division: Sandhya—data preparation; Xinlei—analysis, method choice and figures; Chen—interpretation and conclusions | Exact individual authorship of each line of code, figure or paragraph |
+| Meeting agendas and weekly reports | Reported responsibilities, discussion topics, checks and planned tasks | That every planned task was completed, or completed exclusively by the named person |
+| Git history and commit metadata | When files were committed or merged and which account recorded the commit | Original authorship, intellectual contribution, review, validation or proportional effort |
+| Scripts, data files, figures and saved outputs | What analytical work and deliverables are present in the project | Who originally produced each deliverable without independent confirmation |
+
+Examples of relevant project artefacts to cross-check when assigning exact ownership include `analysis/urban_activity_eda.R`, `analysis/urban_activity_summary.md`, `analysis/noise_eda.R`, `analysis/prepare_noise_outcomes.R`, `analysis/build_sensor_integration.R`, `analysis/validate_sensor_integration.R`, and `analysis/part3_spatial_integration.R`. This is an indicative list from retained records, **not an assignment of exclusive authorship**.
+
+## Team collaboration and verification before submission
+
+The three roles formed a connected process: Sandhya prepared and classified relevant inputs; Xinlei selected methods, analysed the data and visualised results; Chen examined the findings and developed interpretations and conclusions. Work that involved joint decisions, merging, cross-checking or revision should be acknowledged as collaborative where appropriate.
