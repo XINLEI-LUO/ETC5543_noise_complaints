@@ -24,3 +24,5 @@ renv/runtime/
 __pycache__/
 *.py[cod]
 .pytest_cache/
+/.quarto/
+**/*.quarto_ipynb

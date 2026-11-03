@@ -19,7 +19,9 @@ lang: en-AU
 execute:
   enabled: false
 ---
-
+```{=typst}
+#pagebreak()
+```
 # Abstract {.unnumbered}
 
 Data from urban sensors can show strong temporal and local pattern, and sparse monitoring networks can also lead to conclusions that the data do not support. This project examines the field called Noise in a microclimate snapshot retained by the City of Melbourne and correlates it with time and the monitored location, as well as pedestrian information and nearby hospitality records. Due to the lack of official metadata which would identify the physical unit, sensor model, calibration protocol or a noise-specific quality flag for this field, all results are reported as recorded Noise values in dataset units. The snapshot includes 975,550 records from 12 devices in the period from 31 May 2022 to 17 August 2026. 11 devices have 893,959 usable Noise values, while one device has no usable Noise observations. Medians, sensor-balanced summaries and coverage diagnostics and sensitivity analyses are used to minimize the impact of extreme values, unequal record numbers and evolving network composition. In GDA2020 MGA Zone 55, the spatial features are determined using a primary buffer of 500 m, and two sensitivity buffers of 250 m and 1,000 m.
